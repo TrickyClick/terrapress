@@ -1,15 +1,14 @@
 'use strict';
 
-const terminal = require('./helpers/terminal');
+const logger = require('./helpers/logger');
 const initApp = require('./init/app');
 const initSecrets = require('./init/secrets');
 
 const init = async () => {
-  terminal.info(
+  logger.info(
     `Welcome to ultimate-wordpress's configurator script
     Please follow the instructions`
   )
-  terminal.brightBlue();
 
   await initApp();
   await initSecrets();
@@ -17,9 +16,9 @@ const init = async () => {
 
 init()
   .then(() => {
-    terminal.success('Terrapress initialisation complete!');
-    terminal.run('npm run remote:setup', 'to install your server');
-    terminal.run('npm run local:setup', 'to setup for local dev');
+    logger.success('Terrapress initialisation complete!');
+    logger.run('npm run remote:setup', 'to install your server');
+    logger.run('npm run local:setup', 'to setup for local dev');
     process.exit();
   })
   .catch(console.error);

@@ -7,26 +7,25 @@ const shell = require('shelljs');
 const { PATH_SECRETS, PATH_SSH } = require('../config');
 const secretsMap = require('../config/secretsMap');
 const terminal = require('../helpers/terminal');
+const logger = require('../helpers/logger');
 
 const pubCertRegex = /\.pub$/;
 
-const input = async (message, defaultValue, echoChar = false) => {
-  terminal.yellow(message);
-  const value = await terminal.inputField({
-    echoChar,
-    cancelable: true,
-    default: defaultValue || '',
-  }).promise;
-
-  terminal('\n');
-  return value;
+const input = (message, defaultValue, echoChar = false) => {
+  logger.question(message);
+  return terminal.textInput(defaultValue, echoChar);
 }
+
+const askCertificateSaveLocation = () => {
+  logger.question('Save as:');
+  return terminal.textInput(path.resolve(PATH_SSH, 'id_rsa'));
+};
 
 const init = async () => {
   let secrets = {};
 
-  terminal.title('Secrets Configuration');
-  terminal.infi(
+  logger.title('Secrets Configuration');
+  logger.info(
     `These values will be saved as:
     ${PATH_SECRETS}
 
@@ -37,8 +36,8 @@ const init = async () => {
 
   if(fs.existsSync(PATH_SECRETS)) {
     secrets = require(PATH_SECRETS);
-    terminal.success(`Configuration found in ${PATH_SECRETS}`);
-    terminal.question('Do you want to overwrite it?');
+    logger.success(`Configuration found in ${PATH_SECRETS}`);
+    logger.question('Do you want to overwrite it?');
     const overwrite = await terminal.confirm(true);
 
     if(!overwrite) {
@@ -51,41 +50,54 @@ const init = async () => {
     if(fs.existsSync(PATH_SSH)) {
       const certificates = fs.readdirSync(PATH_SSH)
         .filter(str => pubCertRegex.test(str))
-        .map(str => `* ${path.resolve(PATH_SSH, str.replace(pubCertRegex, ''))}`);
+        .map(str => str.replace(pubCertRegex, ''));
 
       if(certificates.length) {
-        terminal.info(`These keys were found in ${PATH_SSH}, select one:`)
-        certificates.push('* Skip selection...');
-        const { selectedIndex, selectedText } = await terminal.singleColumnMenu(certificates).promise;
+        logger.info(`These keys were found in ${PATH_SSH}, select one:`)
+
+        certificates.push('Skip selection...');
+
+        const { selectedIndex, selectedText } = await terminal.select(certificates);
 
         if(selectedIndex !== certificates.length - 1) {
-          certificatePath = path.resolve(PATH_SSH, selectedText.substr(2));
+          certificatePath = path.resolve(PATH_SSH, selectedText);
         }
       }
     }
 
     if(!certificatePath) {
-      terminal.question(
-        `No private/public key pair registered, do you want
-        to use an existing one?`
-      );
+      logger.warning('No private/public key pair found, do you want')
+      logger.question('Do you want to generate a new one?');
       const generateCertificate = await terminal.confirm(true);
 
       if(generateCertificate) {
         if(!shell.which('ssh-keygen')) {
-          terminal.warning('ssh-keygen not found.');
+          logger.warning('ssh-keygen not found.');
         } else {
-          const filename = await input('Enter filename: ', path.resolve(PATH_SSH, 'id_rsa'));
-          const passphrase = await input('Enter passphrase (Optional): ', '', '');
+          let overwriteKey = false;
+          certificatePath = await askCertificateSaveLocation();
 
-          await shell.exec(`ssh-keygen -t rsa -p "${passphrase}" -f ${filename}`);
-          certificatePath = filename;
+          while(shell.test('-f', certificatePath) && !overwriteKey) {
+            logger.warning(`Key ${certificatePath} already exists.`);
+            logger.question('Do you want to overwrite it?');
+          
+            overwriteKey = await terminal.confirm(false);
+            if(!overwriteKey) {
+              certificatePath = await askCertificateSaveLocation();
+            }
+          }
+          
+          logger.question('Enter passphrase (Optional):');
+          const passphrase = await terminal.textInput('', true);
+
+          shell.rm([certificatePath, `${certificatePath}.pub`]);
+          shell.exec(`ssh-keygen -t rsa -N "${passphrase}" -f ${certificatePath}`);
         }
       }
     }
 
     if(!certificatePath) {
-      terminal.warning('Cannot find a valid certificate');
+      logger.warning('Cannot find a valid certificate');
     } else {
       secrets.SSH_PUBLIC_KEY = fs.readFileSync(`${certificatePath}.pub`, 'utf8').trim();
       secrets.SSH_PRIVATE_KEY = fs.readFileSync(certificatePath, 'utf8').trim();
@@ -97,13 +109,13 @@ const init = async () => {
     secrets[key] = await input(`${secretsMap[key]}: `, secrets[key]);
   }
 
-  terminal.info('The following configuration will be saved:\n');
+  logger.info('The following configuration will be saved:\n');
   
   Object.keys(secrets).forEach(key =>
-    terminal.dataRow(key, secrets[key])
+    logger.dataRow(key, secrets[key])
   );
   
-  terminal.question('Does this look OK?');
+  logger.question('Does this look OK?');
   const confirm = await terminal.confirm(true);
   
   if(confirm) {

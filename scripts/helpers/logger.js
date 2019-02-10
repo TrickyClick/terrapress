@@ -4,8 +4,8 @@ const terminal = require('./terminal');
 
 const trimMultiline = str => {
     const lines = str.split('\n').map(line => line.trim());
-    const len = lines.length;
-    const terminator = len > 1 ? '\n' : '';
+    const nonEmptyLines = lines.filter(l => l.trim() !== '');
+    const terminator = nonEmptyLines.length > 1 ? '\n' : '';
 
     return lines.join('\n') + terminator;
 };

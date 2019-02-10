@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const terminal = require('../helpers/terminal');
+const logger = require('../helpers/logger');
 const secretsMap = require('../config/secretsMap');
 
 const PATH_ROOT = path.resolve(__dirname, '..', '..');
@@ -21,8 +21,8 @@ module.exports = {
   get app() {
     if(!app) {
       if(!fs.existsSync(PATH_APP_CONFIG)) {
-        terminal.fatal(`${PATH_APP_CONFIG} was not found.`);
-        terminal.info('Run "npm run init" to set it up');
+        logger.fatal(`${PATH_APP_CONFIG} was not found.`);
+        logger.info('Run "npm run init" to set it up');
         process.exit();
       }
       
@@ -41,8 +41,8 @@ module.exports = {
         }
   
         if(!secrets[key]) {
-          terminal.fatal(`required secret ${key} was not found.`);
-          terminal.info(
+          logger.fatal(`required secret ${key} was not found.`);
+          logger.info(
             `Run "npm run init" to set up your secrets.json
             or add ${key} to your CI environment variables`);
           process.exit();
@@ -52,6 +52,20 @@ module.exports = {
 
     return secrets;
   },
+
+  get SERVER_PATH_CODEBASE() {
+    return `/var/www/${this.app.domain}`;
+  },
+
+  get SERVER_PATH_WEBROOT() {
+    return `${this.codebase}/wordpress`;
+  },
+
+  get SERVER_PATH_CERTIFICATES() {
+    return `/ets/ssl/${this.app.domain}`;
+  },
+
+  SERVER_UPLOAD_LIMIT_MB: 25,
   PATH_ROOT,
   SERVER_PORT,
   SERVER_HOST,
