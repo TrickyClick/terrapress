@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./scripts/start.js",
-    "configure": "node ./scripts/configure.js",
+    "init": "node ./scripts/init.js",
     "local:setup": "node ./scripts/local/setup.js",
     "remote:deploy": "sh ./scripts/deploy.sh",
     "remote:apache:restart": "sh ./scripts/remote/tools/apache-restart.sh",
@@ -37,7 +37,6 @@
   },
   "homepage": "https://github.com/TrickyClick/terrapress#readme",
   "dependencies": {
-    "chalk": "^2.4.2",
     "node-ssh": "^5.1.2",
     "shelljs": "^0.8.3",
     "terminal-kit": "^1.26.11",

@@ -22,7 +22,7 @@ module.exports = {
     if(!app) {
       if(!fs.existsSync(PATH_APP_CONFIG)) {
         terminal.fatal(`${PATH_APP_CONFIG} was not found.`);
-        terminal.info('Run "npm run configure" to set it up');
+        terminal.info('Run "npm run init" to set it up');
         process.exit();
       }
       
@@ -43,7 +43,7 @@ module.exports = {
         if(!secrets[key]) {
           terminal.fatal(`required secret ${key} was not found.`);
           terminal.info(
-            `Run "npm run configure" to set up your secrets.json
+            `Run "npm run init" to set up your secrets.json
             or add ${key} to your CI environment variables`);
           process.exit();
         }

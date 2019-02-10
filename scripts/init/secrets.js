@@ -22,22 +22,23 @@ const input = async (message, defaultValue, echoChar = false) => {
   return value;
 }
 
-const configureSecrets = async () => {
+const init = async () => {
   let secrets = {};
 
-  terminal.brightRed('\nSecrets configuration.\n\n');
-  terminal.cyan(`These values will be saved as\n\n  `)
-  terminal.bold(PATH_SECRETS);
-  terminal.cyan(
-    '\n\nwhich is not tracked. The correct order to configure\n' +
-    'these variables would be to export them as environment\n' +
-    'variables with the same names on your CI server.\n\n'
+  terminal.title('Secrets Configuration');
+  terminal.infi(
+    `These values will be saved as:
+    ${PATH_SECRETS}
+
+    which is not git tracked by default and should be
+    populated by the Environment variables of your
+    CI build`
   );
 
   if(fs.existsSync(PATH_SECRETS)) {
     secrets = require(PATH_SECRETS);
-    terminal.yellow(`Configuration found in ${PATH_SECRETS}\n`);
-    terminal.bold('Do you want to overwrite it?');
+    terminal.success(`Configuration found in ${PATH_SECRETS}`);
+    terminal.question('Do you want to overwrite it?');
     const overwrite = await terminal.confirm(true);
 
     if(!overwrite) {
@@ -53,7 +54,7 @@ const configureSecrets = async () => {
         .map(str => `* ${path.resolve(PATH_SSH, str.replace(pubCertRegex, ''))}`);
 
       if(certificates.length) {
-        terminal.blue(`These keys were found in ${PATH_SSH}, select one:\n`)
+        terminal.info(`These keys were found in ${PATH_SSH}, select one:`)
         certificates.push('* Skip selection...');
         const { selectedIndex, selectedText } = await terminal.singleColumnMenu(certificates).promise;
 
@@ -64,14 +65,15 @@ const configureSecrets = async () => {
     }
 
     if(!certificatePath) {
-      terminal.yellow('No private/public key pair registered, do you want\n')
-      terminal.bold('to use an existing one?');
-
+      terminal.question(
+        `No private/public key pair registered, do you want
+        to use an existing one?`
+      );
       const generateCertificate = await terminal.confirm(true);
+
       if(generateCertificate) {
         if(!shell.which('ssh-keygen')) {
-          terminal.bgBrightRed('WARNING:');
-          terminal.bold('ssh-keygen not found.\n');
+          terminal.warning('ssh-keygen not found.');
         } else {
           const filename = await input('Enter filename: ', path.resolve(PATH_SSH, 'id_rsa'));
           const passphrase = await input('Enter passphrase (Optional): ', '', '');
@@ -83,8 +85,7 @@ const configureSecrets = async () => {
     }
 
     if(!certificatePath) {
-      terminal.bgBrightRed('WARNING:');
-      terminal.bold('Cannot find a valid certificate\n');
+      terminal.warning('Cannot find a valid certificate');
     } else {
       secrets.SSH_PUBLIC_KEY = fs.readFileSync(`${certificatePath}.pub`, 'utf8').trim();
       secrets.SSH_PRIVATE_KEY = fs.readFileSync(certificatePath, 'utf8').trim();
@@ -96,14 +97,13 @@ const configureSecrets = async () => {
     secrets[key] = await input(`${secretsMap[key]}: `, secrets[key]);
   }
 
-  terminal.green('\nThe following configuration will be saved:\n\n')
+  terminal.info('The following configuration will be saved:\n');
   
   Object.keys(secrets).forEach(key =>
-    terminal.white(`\t${key}: `) &&
-    terminal.gray(`${secrets[key]}\n`)
+    terminal.dataRow(key, secrets[key])
   );
   
-  terminal.brightRed('\nDoes this look OK?');
+  terminal.question('Does this look OK?');
   const confirm = await terminal.confirm(true);
   
   if(confirm) {
@@ -111,4 +111,4 @@ const configureSecrets = async () => {
   }
 }
 
-module.exports = configureSecrets;
+module.exports = init;

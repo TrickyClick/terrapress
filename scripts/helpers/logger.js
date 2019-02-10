@@ -1,43 +1,53 @@
-const chalk = require('chalk');
+'use strict';
 
-const validColors = {
-    black: true,
-    red: true,
-    green: true,
-    yellow: true,
-    blue: true,
-    magenta: true,
-    cyan: true,
-    white: true,
-    gray: true,
-    redBright: true,
-    greenBright: true,
-    yellowBright: true,
-    blueBright: true,
-    magentaBright: true,
-    cyanBright: true,
-    whiteBright: true,
-}
+const terminal = require('./terminal');
 
-const getColor = color => {
-    if(!validColors[color]) {
-        throw new Error(`getColor("${color}") is not a valid chalk color. Valid colors are: ${validColors.join(', ')}`);
+const trimMultiline = str => {
+    const lines = str.split('\n').map(line => line.trim());
+    const len = lines.length;
+    const terminator = len > 1 ? '\n' : '';
+
+    return lines.join('\n') + terminator;
+};
+
+const logger = {
+    fatal(message) {
+        terminal.red('FATAL ERROR: ');
+        terminal.bold(trimMultiline(message) + '\n');
+    },
+
+    title(title) {
+        terminal.brightMagenta(`${trimMultiline(title)}\n\n`);
+    },
+
+    error(message) {
+        terminal.brightRed('ERROR: ');
+        terminal.bold(trimMultiline(message) + '\n');
+    },
+    question(message) {
+        terminal.yellow(trimMultiline(message) + ' ');
+    },
+    dataRow(title, value) {
+        terminal.white(`\t${title}: `);
+        terminal.gray(`${value}\n`);
+    },
+    warning(message) {
+        terminal.gray('WARNING: ');
+        terminal.bold(trimMultiline(message) + '\n');
+    },
+    info(message) {
+        terminal.cyan('INFO: ');
+        terminal.bold(trimMultiline(message) + '\n');
+    },
+    run(cmd, message) {
+        terminal.blue('RUN: ');
+        terminal.bold(cmd);
+        terminal.blue(` ${trimMultiline(message)}\n`);
+    },
+    success(message) {
+        terminal.green('SUCCESS: ');
+        terminal.bold(trimMultiline(message) + '\n');
     }
-
-    return chalk[color];
 }
 
-const colored = (color, prefix) => (message) =>
-    console.log(getColor(color)(prefix), message);
-
-const coloredBold = (color, prefix) => (message) =>
-    console.log(chalk.bold(getColor(color)(prefix)), message);
-
-const coloredAllBold = (color, prefix) => (message) =>
-    console.log(chalk.bold(getColor(color)(prefix)), chalk.bold(message));
-
-module.exports = {
-  colored,
-  coloredBold,
-  coloredAllBold,
-}
+module.exports = logger;

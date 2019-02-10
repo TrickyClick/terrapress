@@ -5,11 +5,9 @@ const fs = require('fs');
 const unzipLib = require('unzip');
 const shell = require('shelljs');
 
-const { coloredBold } = require('./logger');
+const logger = require('./logger');
 
 const isHttps = /^https:\/\//i;
-
-const log = coloredBold('magenta', 'FILE');
 
 const download = (url, dest) => 
   new Promise((resolve, reject) => {
@@ -18,7 +16,7 @@ const download = (url, dest) =>
     const lib = isHttps.test(url) ? https : http;
     const output = fs.createWriteStream(dest);
 
-    log(`Downloading: ${url}`);
+    logger.info(`Downloading: ${url}`);
 
     const request = lib.get(url, res => {
       res.pipe(output);
@@ -39,7 +37,7 @@ const unzip = (source, dest) =>
   new Promise((resolve, reject) => {
     shell.mkdir('-p', path.dirname(dest));
 
-    log(`Unzipping: ${source}`);
+    logger.info(`Unzipping: ${source}`);
 
     fs.createReadStream(source)
       .pipe(unzipLib.Extract({ path: dest }))

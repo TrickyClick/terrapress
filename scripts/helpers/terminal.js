@@ -2,10 +2,6 @@
 
 const { terminal } = require('terminal-kit');
 
-const trimMultiline = str => str.split('\n')
-  .map(line => line.trim())
-  .join('\n');
-
 const terminate = () => {
   terminal.grabInput(false) ;
   terminal('\n');
@@ -32,18 +28,47 @@ terminal.confirm = async (defautlYes = false) => {
 }
 
 terminal.fatal = message => {
-  terminal.brightRed('Fatal Еrror: ');
-  terminal.bold(`${trimMultiline(message)}\n`);
+  terminal.red('FATAL ERROR: ');
+  terminal.bold(trimMultiline(message) + '\n');
+}
+
+terminal.title = message => {
+  terminal.brightMagenta(`${trimMultiline(message)}\n\n`);
+}
+
+terminal.err = message => {
+  terminal.brightRed('ERROR: ');
+  terminal.bold(trimMultiline(message) + '\n');
+}
+
+terminal.question = message => {
+  terminal.yellow(trimMultiline(message) + ' ');
+}
+
+terminal.dataRow = (title, value) => {
+  terminal.white(`\t${title}: `);
+  terminal.gray(`${value}\n`);
 }
 
 terminal.warning = message => {
-  terminal.yellow('Warning: ');
-  terminal.bold(`${trimMultiline(message)}\n`);
+  terminal.gray('WARNING: ');
+  terminal.bold(trimMultiline(message) + '\n');
 }
 
 terminal.info = message => {
   terminal.cyan('INFO: ');
-  terminal.bold(`${trimMultiline(message)}\n`)
+  terminal.bold(trimMultiline(message) + '\n');
+}
+
+terminal.run = (cmd, message) => {
+  terminal.blue('RUN: ');
+  terminal.bold(cmd);
+  terminal.blue(` ${trimMultiline(message)}\n`);
+}
+
+terminal.success = message => {
+  terminal.green('SUCCESS: ');
+  terminal.bold(trimMultiline(message) + '\n');
 }
 
 module.exports = terminal;
