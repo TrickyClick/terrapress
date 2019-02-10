@@ -1,13 +1,13 @@
-variable "digitalocean_token" {}
+variable "DIGITALOCEAN_TOKEN" {}
 
-variable "domain" {
+variable "DOMAIN" {
   description = "Root domain to be registered for CloudFlare"
 }
 
-variable "fingerprint" {
+variable "FINGERPRINT" {
   description = "Public key fingerprint for SSH access to host"
 }
 
-variable "cloudflare_token" {}
+variable "CLOUDFLARE_TOKEN" {}
 
-variable "cloudflare_email" {}
+variable "CLOUDFLARE_EMAIL" {}

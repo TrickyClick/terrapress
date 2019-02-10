@@ -32,7 +32,6 @@ const parseRepositoryUrl = url => {
 
   const schemaSeparator = sshRepoRegex.test(url) ? ':' : /github\.com\//i;
   const [_, path] = url.split(schemaSeparator);
-  console.log('discovered', path);
   const [organisation, name] = path.split('/');
   
   return {

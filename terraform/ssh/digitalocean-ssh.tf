@@ -1,9 +1,9 @@
 provider "digitalocean" {
   version = "1.0.2"
-  token   = "${var.digitalocean_token}"
+  token   = "${var.DIGITALOCEAN_TOKEN}"
 }
 
 resource "digitalocean_ssh_key" "access_key" {
-  name       = "${var.public_key_name}"
-  public_key = "${var.public_key}"
+  name       = "${var.SSH_KEY_NAME}"
+  public_key = "${var.SSH_PUBLIC_KEY}"
 }

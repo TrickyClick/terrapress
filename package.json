@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node ./scripts/start.js",
     "init": "node ./scripts/init.js",
+    "deploy": "node ./scripts/deploy.js",
     "local:setup": "node ./scripts/local/setup.js",
     "remote:deploy": "sh ./scripts/deploy.sh",
     "remote:apache:restart": "sh ./scripts/remote/tools/apache-restart.sh",

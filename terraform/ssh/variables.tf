@@ -1,5 +1,5 @@
-variable "digitalocean_token" {}
+variable "DIGITALOCEAN_TOKEN" {}
 
-variable "public_key_name" {}
+variable "SSH_KEY_NAME" {}
 
-variable "public_key" {}
+variable "SSH_PUBLIC_KEY" {}

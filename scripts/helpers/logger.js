@@ -47,6 +47,12 @@ const logger = {
     success(message) {
         terminal.green('SUCCESS: ');
         terminal.bold(trimMultiline(message) + '\n');
+    },
+    sleep(seconds, message) {
+        terminal.blue('SLEEPING: ');
+        terminal.bold(trimMultiline(message) + '\n');
+
+        return new Promise(r => setTimeout(r, seconds * 1000));
     }
 }
 
