@@ -1,0 +1,46 @@
+{
+  "name": "terrapress",
+  "version": "1.0.0",
+  "description": "Boilerplate for provisioning a Wordpress instance with extras on DigitalOcean",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./scripts/start.js",
+    "configure": "node ./scripts/configure.js",
+    "local:setup": "node ./scripts/local/setup.js",
+    "remote:deploy": "sh ./scripts/deploy.sh",
+    "remote:apache:restart": "sh ./scripts/remote/tools/apache-restart.sh",
+    "remote:certificate:refresh": "sh ./scripts/remote/tools/certificate-refresh.sh",
+    "remote:destroy": "sh ./scripts/destroy.sh",
+    "remote:db:copy": "node ./scripts/remote/db-copy.js",
+    "remote:phpmyadmin:install": "sh ./scripts/remote/tools/phpmyadmin-install.sh",
+    "remote:phpmyadmin:remove": "sh ./scripts/remote/tools/phpmyadmin-remove.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrickyClick/terrapress.git"
+  },
+  "keywords": [
+    "blog",
+    "wordpress",
+    "node",
+    "automation",
+    "ci",
+    "digitalocean",
+    "cloudflare",
+    "github",
+    "devops"
+  ],
+  "author": "Andriyan Ivanov <andriyan.ivanov@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TrickyClick/terrapress/issues"
+  },
+  "homepage": "https://github.com/TrickyClick/terrapress#readme",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "node-ssh": "^5.1.2",
+    "shelljs": "^0.8.3",
+    "terminal-kit": "^1.26.11",
+    "unzip": "^0.1.11"
+  }
+}
