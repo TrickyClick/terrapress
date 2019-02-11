@@ -6,7 +6,7 @@ provider "github" {
 
 resource "github_repository_deploy_key" "server" {
   title      = "${var.DOMAIN}-ssh"
-  read_only  = "true"
+  read_only  = "false"
   repository = "${var.GITHUB_REPOSITORY}"
   key        = "${var.SERVER_KEY}"
 }

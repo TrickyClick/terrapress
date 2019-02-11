@@ -14,7 +14,7 @@
 #  Temp & local dev                                                 #
 #####################################################################
 .tmp
-wordpress
+/wordpress
 backup
 node_modules
 secrets.json

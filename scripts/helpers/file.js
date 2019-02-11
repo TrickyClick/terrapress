@@ -45,7 +45,6 @@ const unzip = (source, dest) =>
       .on('error', reject)
   });
 
-
 module.exports = {
   download,
   unzip,

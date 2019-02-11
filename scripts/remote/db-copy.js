@@ -19,7 +19,7 @@ const copyDb = async () => {
   const ssh = await getConnection();
 
   logger.info('Downloading remote database...');
-  const output = await ssh.exec('wp --allow-root --quiet db export /dev/stdout', {
+  const output = await ssh.exec('wp --allow-root --quiet db export /dev/stdout', [], {
     cwd: app.webRoot
   });
 

@@ -30,12 +30,10 @@ const installDependencies = async() => {
   }
 
   const remoteCertPath = '$HOME/.ssh/id_rsa';
-  const exists = await ssh.exec(`if [ -f "${remoteCertPath}" ]; then echo "1"; else echo "0"; fi`);
 
-  if(exists == 0) {
+  if(!await ssh.fileExists(remoteCertPath)) {
     logger.info(`Generate server's SSH key`);
-    const password = await ssh.exec('echo -n $(date) | sha512sum');
-    const cmd = `yes y | ssh-keygen -b 2048 -N "${password}" -m PEM -t rsa -C "${app.domain}" -f "${remoteCertPath}"`;
+    const cmd = `yes y | ssh-keygen -b 2048 -N "" -m PEM -t rsa -C "${app.domain}" -f "${remoteCertPath}"`;
     await ssh.exec(cmd);
   }
 
