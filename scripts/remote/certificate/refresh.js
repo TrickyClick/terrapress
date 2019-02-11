@@ -8,9 +8,9 @@ const terraform = require('../../helpers/terraform');
 const {
   app: {
     domain,
-    SERVER_PRIVATE_KEY_PEM,
-    SERVER_CERTIFICATE_PEM,
-    SERVER_ISSUER_PEM
+    SSL_PRIVATE_KEY,
+    SSL_CERTIFICATE,
+    SSL_CHAIN_FILE
   }
 } = require('../../config');
 
@@ -23,13 +23,13 @@ const certificateRefresh = async() => {
   logger.info('Saving SSL certificates');
 
   const ssh = await getConnection();
-  ssh.exec(`mkdir -p ${path.dirname(SERVER_PRIVATE_KEY_PEM)}`);
+  ssh.exec(`mkdir -p ${path.dirname(SSL_PRIVATE_KEY)}`);
 
   const { output } = certificatePlan;
   return await Promise.all([
-    ssh.pushToFile(output.PRIVATE_KEY_PEM, SERVER_PRIVATE_KEY_PEM),
-    ssh.pushToFile(output.CERTIFICATE_PEM, SERVER_CERTIFICATE_PEM),
-    ssh.pushToFile(output.ISSUER_PEM, SERVER_ISSUER_PEM),
+    ssh.pushToFile(output.PRIVATE_KEY_PEM, SSL_PRIVATE_KEY),
+    ssh.pushToFile(output.CERTIFICATE_PEM, SSL_CERTIFICATE),
+    ssh.pushToFile(output.ISSUER_PEM, SSL_CHAIN_FILE),
   ]);
 }
 

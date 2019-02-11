@@ -29,7 +29,6 @@ const dbSetup = async () => {
     DB_PASSWORD,
   });
 
-  
   logger.info('Updating MariaDb credentials');
   await ssh.exec(`mysql -uroot -e "${createUserSql}"`);
   

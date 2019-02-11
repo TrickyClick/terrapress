@@ -23,6 +23,7 @@ ssh.fileExists = file => exists(file, false);
 ssh.directoryExists = dir => exists(dir, true);
 
 ssh.pushToFile = async (data, dest) => {
+  logger.info(`Pushing to file: ${dest}`);
   const random = randomString(10);
   const localTemp = path.resolve(PATH_TEMP, 'ssh', `${Date.now()}-${random}.temp`);
 

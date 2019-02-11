@@ -9,6 +9,8 @@ const codeClone = require('./remote/code/clone');
 const wordpressSetup = require('./remote/wordpress/setup');
 const dbSetup = require('./remote/db/setup');
 const apacheSetup = require('./remote/apache/setup');
+const apacheRestart = require('./remote/apache/restart');
+const phpSetup = require('./remote/php/setup');
 
 const deploy = async () => {
   logger.info('Adding SSH key to DigitalOcean');
@@ -33,6 +35,8 @@ const deploy = async () => {
   await wordpressSetup();
   await dbSetup();
   await apacheSetup();
+  await phpSetup();
+  await apacheRestart();
 }
 
 deploy()
@@ -40,4 +44,7 @@ deploy()
     logger.success('Deployment complete!');
     process.exit();
   })
-  .catch(console.error);
+  .catch(err => {
+    logger.fatal(err.stack);
+    process.exit(1);
+  });

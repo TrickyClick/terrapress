@@ -10,9 +10,9 @@ const {
     domain,
     supportEmail,
     SERVER_PATH_WEBROOT,
-    SERVER_PRIVATE_KEY_PEM,
-    SERVER_CERTIFICATE_PEM ,
-    SERVER_ISSUER_PEM,
+    SSL_PRIVATE_KEY,
+    SSL_CERTIFICATE ,
+    SSL_CHAIN_FILE,
   }
 } = require('../../config');
 
@@ -40,9 +40,9 @@ const apacheSetup = async () => {
     domain,
     supportEmail,
     SERVER_PATH_WEBROOT,
-    SERVER_PRIVATE_KEY_PEM,
-    SERVER_CERTIFICATE_PEM ,
-    SERVER_ISSUER_PEM,
+    SSL_PRIVATE_KEY,
+    SSL_CERTIFICATE ,
+    SSL_CHAIN_FILE,
   });
 
   await ssh.pushToFile(apacheConfig, apacheConfigPath);

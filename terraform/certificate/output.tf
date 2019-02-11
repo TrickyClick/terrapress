@@ -29,6 +29,6 @@ output "CERTIFICATE_PEM" {
 }
 
 output "ISSUER_PEM" {
-  value     = "${acme_certificate.certificate.certificate_pem}"
+  value     = "${acme_certificate.certificate.issuer_pem}"
   sensitive = true
 }
