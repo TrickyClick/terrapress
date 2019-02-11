@@ -24,9 +24,9 @@ const installDependencies = async() => {
   logger.info('Updating aptitude...');
   await ssh.exec('apt-get -qq update');
 
-  for(let dep of dependencies) {
-    logger.info(`Installing ${dep}`);
-    await ssh.exec(`DEBIAN_FRONTEND=noninteractive apt-get -qq install ${dep}`);
+  for(let dependency of dependencies) {
+    logger.info(`Installing ${dependency}`);
+    await ssh.exec(`DEBIAN_FRONTEND=noninteractive apt-get -qq install ${dependency}`);
   }
 
   const remoteCertPath = '$HOME/.ssh/id_rsa';

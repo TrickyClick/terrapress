@@ -1,2 +1,2 @@
 <?php
-  define( 'DB_PASSWORD', '%MYSQL_PASSWORD%' );
+  define( 'DB_PASSWORD', '%DB_PASSWORD%' );

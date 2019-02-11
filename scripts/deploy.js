@@ -8,6 +8,7 @@ const certificateRefresh = require('./remote/certificate/refresh');
 const codeClone = require('./remote/code/clone');
 const wordpressSetup = require('./remote/wordpress/setup');
 const dbSetup = require('./remote/db/setup');
+const apacheSetup = require('./remote/apache/setup');
 
 const deploy = async () => {
   logger.info('Adding SSH key to DigitalOcean');
@@ -31,6 +32,7 @@ const deploy = async () => {
   await codeClone();
   await wordpressSetup();
   await dbSetup();
+  await apacheSetup();
 }
 
 deploy()

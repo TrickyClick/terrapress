@@ -21,10 +21,14 @@ class TerraformPlan {
     this.variables = variables;
 
     if(!this.init()) {
-      const error = `Terraform: "${this.path}" is not a valid plan`;
+      const error = `${this.logPrefix} "${this.path}" is not a valid plan`;
       logger.fatal(error);
       process.exit(1);
     }
+  }
+
+  get logPrefix() {
+    return `Terraform (${this.name}):`;
   }
 
   get options() {
@@ -82,9 +86,14 @@ class TerraformPlan {
     let confirm = autoConfirm;
     const cmd = 'apply -auto-approve';
 
+    logger.warning(`${this.logPrefix} Applying with variables:\n`);
+    Object.keys(this.variables).forEach(key =>
+      logger.dataRow(key, this.variables[key])
+    );
+    terminal('\n');
+
     if(!confirm) {
-      logger.warning(`Executing:\n${this.bin} ${cmd}`);
-      logger.question('Are you sure that you want to apply the plan?');
+      logger.question(`${this.logPrefix} Are you sure that you want to apply the plan?`);
       confirm = await terminal.confirm();
     }
 

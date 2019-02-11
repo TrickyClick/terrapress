@@ -1,8 +1,8 @@
 <?php
   define( 'WP_HOME',          'https://%domain%' );
   define( 'WP_SITEURL',       'https://%domain%' );
-  define( 'DB_NAME',          '%MYSQL_DATABASE%' );
-  define( 'DB_USER',          '%MYSQL_USERNAME%' );
+  define( 'DB_NAME',          '%DB_NAME%' );
+  define( 'DB_USER',          '%DB_USER%' );
   define( 'DB_HOST',          'localhost' );
   define( 'DB_CHARSET',       'utf8' );
   define( 'DB_COLLATE',       '' );

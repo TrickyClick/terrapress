@@ -1,38 +1,42 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 
 const {
-  MYSQL_DATABASE,
-  MYSQL_USERNAME,
+  DB_NAME,
+  DB_USER,
   app: {
     SERVER_PATH_WP_DB_CONFIG
   },
 } = require('../../config');
 const logger = require('../../helpers/logger');
 const getConnection = require('../../helpers/ssh');
-const { randomString } = require('../../helpers/strings');
+const { randomString, renderTemplate } = require('../../helpers/strings');
 
 const createUserTemplate = path.resolve(__dirname, 'assets', 'create-user.tpl.sql');
 const wpDbConfigTemplate = path.resolve(__dirname, 'assets', 'wp-db-config.tpl.php');
 
 const dbSetup = async () => {
-  const ssh = await getConnection();
-  const MYSQL_PASSWORD = randomString(32);
-  const createUserSql = fs.readFileSync(createUserTemplate, 'utf8')
-    .replace(/%MYSQL_DATABASE%/gi, MYSQL_DATABASE)
-    .replace(/%MYSQL_USERNAME%/gi, MYSQL_USERNAME)
-    .replace(/%MYSQL_PASSWORD%/gi, MYSQL_PASSWORD);
+  logger.info('Setting up MariaDb...');
 
-  const wpDbConfig = fs.readFileSync(wpDbConfigTemplate, 'utf8')
-    .replace(/%MYSQL_PASSWORD%/gi, MYSQL_PASSWORD);
+  const ssh = await getConnection();
+  const DB_PASSWORD = randomString(32);
+
+  const wpDbConfig = renderTemplate(wpDbConfigTemplate, { DB_PASSWORD });
+  const createUserSql = renderTemplate(createUserTemplate, {
+    DB_NAME,
+    DB_USER,
+    DB_PASSWORD,
+  });
+
   
-  logger.info('Updating credentials in MySQL');
+  logger.info('Updating MariaDb credentials');
   await ssh.exec(`mysql -uroot -e "${createUserSql}"`);
   
-  logger.info('Saving new credentials to WordPress');
+  logger.info('Updating WordPress db settings');
   await ssh.pushToFile(wpDbConfig, SERVER_PATH_WP_DB_CONFIG);
+
+  logger.success('MariaDb configured successfully')
 };
 
 module.exports = dbSetup;

@@ -1,11 +1,10 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 
 const getConnection = require('../../helpers/ssh');
 const logger = require('../../helpers/logger');
-const { randomString } = require('../../helpers/strings');
+const { randomString, renderTemplate } = require('../../helpers/strings');
 const {
   app: {
     domain,
@@ -13,16 +12,17 @@ const {
     SERVER_PATH_WEBROOT,
     SERVER_PATH_WP_CONFIG,
   },
-  MYSQL_DATABASE,
-  MYSQL_USERNAME,
+  DB_NAME,
+  DB_USER,
   WORDPRESS_SOURCE_URL,
+  WEB_USER_NAME,
+  WEB_USER_GROUP,
 } = require('../../config');
 
 const templatePath = path.resolve(__dirname, 'assets', 'wp-config.tpl.php');
-const wpConfigTemplate = fs.readFileSync(templatePath, 'utf8');
 
 const wordpressSetup = async () => {
-  logger.info('Configuring WordPress on the remote host');
+  logger.info('Setting up WordPress...');
   const ssh = await getConnection();
   const targzSource = WORDPRESS_SOURCE_URL.replace(/\.zip$/, '.tar.gz');
 
@@ -43,23 +43,26 @@ const wordpressSetup = async () => {
     await ssh.exec(`mv wordpress/* ${SERVER_PATH_WEBROOT}/`, [], { cwd: temp });
     await ssh.exec(`ln -s ${SERVER_PATH_CODEBASE}/src ${SERVER_PATH_WEBROOT}/wp-content`)
 
-    logger.info('Removing temp...');
+    logger.info('Removing temp');
     await ssh.exec(`rm -rf ${temp}`);
 
-    logger.success('WordPress installed on the server!');
+    logger.success('WordPress installed correctly!');
   }
 
   logger.info('Updating WordPress config');
-  const wpConfig = wpConfigTemplate
-    .replace(/%domain%/gi, domain)
-    .replace(/%secret%/gi, () => randomString(40))
-    .replace(/%MYSQL_USERNAME%/gi, MYSQL_USERNAME)
-    .replace(/%MYSQL_DATABASE%/gi, MYSQL_DATABASE)
+  const wpConfig = renderTemplate(templatePath, {
+    DB_USER,
+    DB_NAME,
+    domain,
+    secret: () => randomString(40),
+  })
 
   await ssh.pushToFile(wpConfig, SERVER_PATH_WP_CONFIG);
-  await ssh.exec(`chown -R www-data:www-data .`, [], { cwd: SERVER_PATH_WEBROOT });
 
-  logger.success('WordPress config updated!');
+  logger.info(`Changing Web Root ownership to ${WEB_USER_NAME}`);
+  await ssh.exec(`chown -R ${WEB_USER_NAME}:${WEB_USER_GROUP} .`, [], { cwd: SERVER_PATH_WEBROOT });
+
+  logger.success('WordPress is ready to go!');
 }
 
 module.exports = wordpressSetup;

@@ -36,7 +36,9 @@ module.exports = {
   PATH_TEMP: path.resolve(PATH_ROOT, '.tmp'),
   PATH_TERRAFORM: path.resolve(PATH_ROOT, 'terraform'),
   LOCAL_URL: `http://${SERVER_HOST}:${SERVER_PORT}`,
-  MYSQL_USERNAME: 'wordpress',
-  MYSQL_DATABASE: 'wordpress',
+  DB_USER: 'wordpress',
+  DB_NAME: 'wordpress',
   WORDPRESS_SOURCE_URL: 'https://wordpress.org/latest.zip',
+  WEB_USER_NAME: 'www-data',
+  WEB_USER_GROUP: 'www-data',
 };
