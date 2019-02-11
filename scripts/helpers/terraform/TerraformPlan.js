@@ -3,9 +3,9 @@
 const path = require('path');
 const shell = require('shelljs');
 
-const terminal = require('./terminal');
-const logger = require('./logger');
-const { PATH_TERRAFORM } = require('../config');
+const terminal = require('../terminal');
+const logger = require('../logger');
+const { PATH_TERRAFORM } = require('../../config');
 
 const terraform = shell.which('terraform');
 if(!terraform) {
@@ -14,13 +14,13 @@ if(!terraform) {
   process.exit();
 }
 
-class Terraform {
-  constructor(name, variables) {
+class TerraformPlan {
+  constructor(name, variables = {}) {
     this.name = name.replace('.', '');
     this.path = path.resolve(PATH_TERRAFORM, this.name);
     this.variables = variables;
 
-    if(!this.init() || !this.validate()) {
+    if(!this.init()) {
       const error = `Terraform: "${this.path}" is not a valid plan`;
       logger.fatal(error);
       process.exit(1);
@@ -63,7 +63,7 @@ class Terraform {
       return false;
     }
 
-    return this.exec('init').code === 0;
+    return this.exec('init', { silent: true }).code === 0;
   }
 
   validate() {
@@ -75,6 +75,10 @@ class Terraform {
   }
 
   async apply(autoConfirm = false) {
+    if(!this.validate()) {
+      return false;
+    }
+
     let confirm = autoConfirm;
     const cmd = 'apply -auto-approve';
 
@@ -88,4 +92,4 @@ class Terraform {
   }
 }
 
-module.exports = Terraform;
+module.exports = TerraformPlan;

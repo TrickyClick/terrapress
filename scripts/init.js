@@ -17,7 +17,7 @@ const init = async () => {
 init()
   .then(() => {
     logger.success('Terrapress initialisation complete!');
-    logger.run('npm run remote:setup', 'to install your server');
+    logger.run('npm run deploy', 'to setup the infrastrcture and deploy the server');
     logger.run('npm run local:setup', 'to setup for local dev');
     process.exit();
   })

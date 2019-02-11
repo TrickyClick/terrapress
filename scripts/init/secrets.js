@@ -29,14 +29,13 @@ const init = async () => {
     `These values will be saved as:
     ${PATH_SECRETS}
 
-    which is not git tracked by default and should be
-    populated by the Environment variables of your
-    CI build`
+    which is not git tracked by default and should be populated by the
+    Environment variables of your CI server`
   );
 
   if(fs.existsSync(PATH_SECRETS)) {
     secrets = require(PATH_SECRETS);
-    logger.success(`Configuration found in ${PATH_SECRETS}`);
+    logger.info(`Configuration found in ${PATH_SECRETS}`);
     logger.question('Do you want to overwrite it?');
     const overwrite = await terminal.confirm(true);
 
@@ -91,7 +90,7 @@ const init = async () => {
           const passphrase = await terminal.textInput('', true);
 
           shell.rm([certificatePath, `${certificatePath}.pub`]);
-          shell.exec(`ssh-keygen -t rsa -N "${passphrase}" -f ${certificatePath}`);
+          shell.exec(`ssh-keygen -b 2048 -t rsa -N "${passphrase}" -m PEM -f ${certificatePath}`);
         }
       }
     }

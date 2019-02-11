@@ -1,34 +1,34 @@
-output "id" {
+output "ID" {
   value     = "${acme_certificate.certificate.id}"
   sensitive = true
 }
 
-output "certificate_url" {
+output "CERTIFICATE_URL" {
   value     = "${acme_certificate.certificate.certificate_url}"
   sensitive = true
 }
 
-output "certificate_domain" {
+output "CERTIFICATE_DOMAIN" {
   value     = "${acme_certificate.certificate.certificate_domain}"
   sensitive = true
 }
 
-output "account_ref" {
+output "ACCOUNT_REF" {
   value     = "${acme_certificate.certificate.account_ref}"
   sensitive = true
 }
 
-output "private_key_pem" {
+output "PRIVATE_KEY_PEM" {
   value     = "${acme_certificate.certificate.private_key_pem}"
   sensitive = true
 }
 
-output "certificate_pem" {
+output "CERTIFICATE_PEM" {
   value     = "${acme_certificate.certificate.certificate_pem}"
   sensitive = true
 }
 
-output "issuer_pem" {
+output "ISSUER_PEM" {
   value     = "${acme_certificate.certificate.certificate_pem}"
   sensitive = true
 }

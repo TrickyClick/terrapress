@@ -1,7 +1,7 @@
-variable "cloudflare_token" {}
+variable "CLOUDFLARE_TOKEN" {}
 
-variable "cloudflare_email" {}
+variable "CLOUDFLARE_EMAIL" {}
 
-variable "support_email" {}
+variable "SUPPORT_EMAIL" {}
 
-variable "domain" {}
+variable "DOMAIN" {}

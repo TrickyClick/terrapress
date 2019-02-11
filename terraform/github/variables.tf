@@ -1,13 +1,14 @@
-variable "github_token" {}
+variable "GITHUB_TOKEN" {}
 
-variable "domain" {}
+variable "DOMAIN" {}
 
-variable "github_org" {
+variable "GITHUB_ORG" {
   description = "GitHub organization/user"
 }
-
-variable "server_key" {
-  description = "Server's id_rsa.pub"
+variable "GITHUB_REPOSITORY" {
+  description = "GitHub repository name"
 }
 
-variable "repository_name" {}
+variable "SERVER_KEY" {
+  description = "Server's id_rsa.pub"
+}
