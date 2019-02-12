@@ -15,7 +15,12 @@ const codeClone = async () => {
 
   if(!await ssh.directoryExists(SERVER_PATH_CODEBASE)) {
     logger.info(`Clonning ${repositoryUrl} into ${SERVER_PATH_CODEBASE}`);
-    await ssh.exec(`yes y | git clone --quiet ${repositoryUrl} ${SERVER_PATH_CODEBASE}`);
+
+    try {
+      const env = 'GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no"';
+      await ssh.exec(`${env} git clone -q ${repositoryUrl} ${SERVER_PATH_CODEBASE}`);
+    } catch(e) { }
+
     await ssh.exec(`chown -R www-data:www-data ${SERVER_PATH_CODEBASE}`);
     await ssh.exec(`ln -s ${SERVER_PATH_CODEBASE} /root/${domain}`);
   }

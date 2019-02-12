@@ -78,6 +78,22 @@ class TerraformPlan {
     return this.exec('plan').code === 0;
   }
 
+  async destroy(autoConfirm = false) {
+    if(!this.validate()) {
+      return false;
+    }
+
+    let confirm = autoConfirm;
+    const cmd = 'destroy -auto-approve';
+
+    if(!confirm) {
+      logger.question(`${this.logPrefix} Are you sure that you want to destroy the plan?`);
+      confirm = await terminal.confirm();
+    }
+
+    return confirm ? this.exec(cmd).code === 0 : false;
+  }
+
   async apply(autoConfirm = false) {
     if(!this.validate()) {
       return false;

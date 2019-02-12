@@ -14,23 +14,26 @@ const {
   }
 } = require('../../config');
 
-const certificateRefresh = async() => {
+const certificateRefresh = async () => {
   logger.info(`Refreshing ${domain} certificate`);
   
   const certificatePlan = terraform.getCertificatePlan();
-  await certificatePlan.apply();
+  if(!await certificatePlan.apply()) {
+    return;
+  }
   
-  logger.info('Saving SSL certificates');
-
+  logger.info('Uploading new SSL certificates');
   const ssh = await getConnection();
   ssh.exec(`mkdir -p ${path.dirname(SSL_PRIVATE_KEY)}`);
 
   const { output } = certificatePlan;
-  return await Promise.all([
+  await Promise.all([
     ssh.pushToFile(output.PRIVATE_KEY_PEM, SSL_PRIVATE_KEY),
     ssh.pushToFile(output.CERTIFICATE_PEM, SSL_CERTIFICATE),
     ssh.pushToFile(output.ISSUER_PEM, SSL_CHAIN_FILE),
   ]);
+
+  logger.success('SSL certificate is fresh & clean!');
 }
 
 module.exports = certificateRefresh;

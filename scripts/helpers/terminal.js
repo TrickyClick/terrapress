@@ -4,8 +4,8 @@ const { terminal } = require('terminal-kit');
 
 const terminate = () => {
   terminal.grabInput(false) ;
-  terminal('\n');
-  process.exit();
+  terminal.bold('\n\nAborting...\n');
+  setTimeout(process.exit, 500);
 }
 
 terminal.on('key', name => name === 'CTRL_C' ? terminate() : {});

@@ -7,14 +7,11 @@
     "start": "node ./scripts/start.js",
     "init": "node ./scripts/init.js",
     "deploy": "node ./scripts/deploy.js",
+    "destroy": "node ./scripts/destroy.js",
     "local:setup": "node ./scripts/local/setup.js",
-    "remote:deploy": "sh ./scripts/deploy.sh",
-    "remote:apache:restart": "sh ./scripts/remote/tools/apache-restart.sh",
-    "remote:certificate:refresh": "sh ./scripts/remote/tools/certificate-refresh.sh",
-    "remote:destroy": "sh ./scripts/destroy.sh",
     "remote:db:copy": "node ./scripts/remote/db-copy.js",
-    "remote:phpmyadmin:install": "sh ./scripts/remote/tools/phpmyadmin-install.sh",
-    "remote:phpmyadmin:remove": "sh ./scripts/remote/tools/phpmyadmin-remove.sh"
+    "remote:phpmyadmin:install": "node ./scripts/remote/phpmyadmin/install.js",
+    "remote:phpmyadmin:remove": "node ./scripts/remote/phpmyadmin/remove.js"
   },
   "repository": {
     "type": "git",

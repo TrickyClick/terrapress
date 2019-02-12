@@ -41,7 +41,13 @@ module.exports = {
   async getGithubPlan() {
     const getConnection = require('../ssh');
     const ssh = await getConnection();
-    const SERVER_KEY = await ssh.exec('cat $HOME/.ssh/id_rsa.pub');
+
+    const pubKey = '$HOME/.ssh/id_rsa.pub';
+    let SERVER_KEY;
+  
+    if(await ssh.fileExists(pubKey)) {
+      SERVER_KEY = await ssh.exec(`cat ${pubKey}`);
+    }
   
     return new TerraformPlan('github', {
       GITHUB_REPOSITORY: app.repository,

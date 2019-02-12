@@ -11,6 +11,8 @@ const terraform = require('./terraform');
 const { randomString } = require('./strings');
 
 const ssh = new node_ssh();
+const retry = 5;
+const timeout = 5;
 
 const exists = async (path, isDirectory = false) => {
   const type = isDirectory ? 'd' : 'f';
@@ -35,18 +37,41 @@ ssh.pushToFile = async (data, dest) => {
 }
 
 let connection;
+
+const tryConnect = async (attempts, options) => {
+  try {
+    await ssh.connect(options);
+  } catch(e) {
+    if(!--attempts) {
+      logger.fatal('SSH failed to connect');
+      return false;
+    }
+
+    logger.warning(`SSH didn't connect. ${attempts} attempts left, retrying in ${timeout} seconds...`);
+    await new Promise(r => setTimeout(r, timeout*1000));
+    return tryConnect(attempts, options);
+  }
+}
+
 const getConnection = () => {
   if(!connection) {
     const servicePlan = terraform.getServicePlan();
     const { IP } = servicePlan.output;
+
+    if(!IP) {
+      throw new Error(`Remote host IP is not defined`);
+    }
+
     logger.info(`Connecting to host: ${IP}`);
 
-    connection = ssh.connect({
+    const options = {
       host: IP,
       username: 'root',
       privateKey: secrets.SSH_PRIVATE_KEY,
-    })
-    .then(() => ssh);
+    };
+
+    connection = tryConnect(retry, options)
+      .then(() => ssh);
   }
 
   return connection;

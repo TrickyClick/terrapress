@@ -17,4 +17,9 @@ const phpmyadminRemove = async() => {
   logger.info(`phpMyAdmin is uninstalled!`);
 };
 
-module.exports = phpmyadminRemove;
+phpmyadminRemove()
+  .then(process.exit)
+  .catch(err => {
+    console.error(err);
+    process.exit(1);
+  });

@@ -1,55 +1,39 @@
 'use strict';
 
-const { app, secrets } = require('./config');
+const terminal = require('./helpers/terminal');
 const logger = require('./helpers/logger');
-const getConnection = require('./helpers/ssh');
-const installDependencies = require('./remote/install');
-const Terraform = require('./helpers/Terraform');
-const {
-  DIGITALOCEAN_TOKEN,
-  SSH_KEY_NAME,
-  SSH_PUBLIC_KEY,
-  CLOUDFLARE_TOKEN,
-  CLOUDFLARE_EMAIL,
-} = secrets;
+const terraform = require('./helpers/terraform');
 
-const deploy = async () => {
-  logger.info('Adding SSH key to DigitalOcean');
+const destroy = async () => {
+  logger.warning('Destroying the infrastructure!');
+  logger.question(`Are you sure that you want to continue? Type "DESTROY" if you wish to continue:`);
 
-  const { FINGERPRINT } = sshPlan.output;
-  const { IP } = servicePlan.output;
-//   const { serverKey }
-// SERVER_KEY=$(ssh -oStrictHostKeyChecking=no root@$HOST_IP 'cat $HOME/.ssh/id_rsa.pub')
+  const confirm = await terminal.textInput();
+  if(confirm !== 'DESTROY') {
+    logger.warning('Aborting.');
+    return;
+  }
 
-// echo "[DESTROY] Unregister server from github"
-// cd "${ROOT}/../terraform/github"
+  logger.info('Destroying GitHub resources');
+  const githubPlan = await terraform.getGithubPlan();
+  await githubPlan.destroy(true);
 
-// TF_VAR_domain=$DOMAIN \
-// TF_VAR_server_key=$SERVER_KEY \
-// TF_VAR_repository_name=$GITHUB_REPOSITORY \
-// TF_VAR_github_token=$GITHUB_TOKEN \
-// TF_VAR_github_org=$GITHUB_ORG \
-//   terraform destroy -auto-approve
+  logger.info('Destroying certificates');
+  await terraform.getCertificatePlan().destroy(true);
 
-// echo "[DESTROY] Domain certificate"
-// cd "${ROOT}/../terraform/certificate"
+  logger.info('Destroying DigitalOcean droplet');
+  logger.warning('YOUR SERVER WILL STOP TO EXIST! NO RETURN BEYOND THIS POINT...');
+  if(!await terraform.getServicePlan().destroy()) {
+    logger.warning('Aborting.');
+  } else {
+    logger.success('Infrastructure was destroyed!')
+  }
 
-// TF_VAR_support_email=$SUPPORT_EMAIL \
-// TF_VAR_domain=$DOMAIN \
-// TF_VAR_cloudflare_token=$CLOUDFLARE_TOKEN \
-// TF_VAR_cloudflare_email=$CLOUDFLARE_EMAIL \
-//    terraform destroy -auto-approve -input=false
-
-// echo "[DESTROY] Digitalocean droplet"
-// cd "${ROOT}/../terraform/service"
-
-// TF_VAR_support_email=$SUPPORT_EMAIL \
-// TF_VAR_domain=$DOMAIN \
-// TF_VAR_digitalocean_token=$DIGITALOCEAN_TOKEN \
-// TF_VAR_fingerprint=$FINGERPRINT \
-// TF_VAR_cloudflare_token=$CLOUDFLARE_TOKEN \
-// TF_VAR_cloudflare_email=$CLOUDFLARE_EMAIL \
-//   terraform destroy -auto-approve
-
-// echo "[DESTROY] Completed Successfully!"
 };
+
+destroy()
+  .then(process.exit)
+  .catch(err => {
+    console.error(err);
+    process.exit(1);
+  });

@@ -19,9 +19,9 @@ const deploy = async () => {
 
   logger.info('Provisioning DigitalOcean droplet');
   const servicePlan = terraform.getServicePlan();
+  const applyServicePlan = await servicePlan.apply();
 
-  if(await servicePlan.apply()) {
-    await logger.sleep(5, 'Terraform: waiting 5s for resource to be created...');
+  if(applyServicePlan) {
     await installDependencies();
   }
 
@@ -29,7 +29,7 @@ const deploy = async () => {
 
   logger.info('Registering server on GitHub');
   const githubPlan = await terraform.getGithubPlan();
-  await githubPlan.apply();
+  await githubPlan.apply(applyServicePlan);
 
   await codeClone();
   await wordpressSetup();
