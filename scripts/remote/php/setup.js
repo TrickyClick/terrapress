@@ -5,7 +5,7 @@ const getConnection = require('../../helpers/ssh');
 const { SERVER_UPLOAD_LIMIT_MB } = require('../../config');
 
 const phpSetup = async() => {
-  logger.info('Setting up PHP...');
+  logger.begin('Setting up PHP...');
   const ssh = await getConnection();
 
   logger.info(`Setting up upload max filesize to: ${SERVER_UPLOAD_LIMIT_MB}MB`);
@@ -18,7 +18,7 @@ const phpSetup = async() => {
     `sed -ri 's/^(post_max_size = )[0-9]+(M.*)$/\\1'${SERVER_UPLOAD_LIMIT_MB}'\\2/' /etc/php/7.0/apache2/php.ini`
   );
 
-  logger.info('PHP is ready to go!');
+  logger.success('PHP is ready to go!');
 };
 
 module.exports = phpSetup;

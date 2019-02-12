@@ -12,22 +12,23 @@ const apacheSetup = require('./remote/apache/setup');
 const apacheRestart = require('./remote/apache/restart');
 const phpSetup = require('./remote/php/setup');
 
-const deploy = async () => {
-  logger.info('Adding SSH key to DigitalOcean');
-  const sshPlan = terraform.getSshPlan();
-  await sshPlan.apply();
+const autoApprove = !!process.env.AUTO_APPROVE;
 
-  logger.info('Provisioning DigitalOcean droplet');
+const deploy = async () => {
+  logger.begin('Deplying infrastructure & code');
+
+  const sshPlan = terraform.getSshPlan();
+  await sshPlan.apply(autoApprove);
+
   const servicePlan = terraform.getServicePlan();
-  const applyServicePlan = await servicePlan.apply();
+  const applyServicePlan = await servicePlan.apply(autoApprove);
 
   if(applyServicePlan) {
     await installDependencies();
   }
 
-  await certificateRefresh();
+  await certificateRefresh(autoApprove);
 
-  logger.info('Registering server on GitHub');
   const githubPlan = await terraform.getGithubPlan();
   await githubPlan.apply(applyServicePlan);
 

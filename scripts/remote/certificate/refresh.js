@@ -14,11 +14,11 @@ const {
   }
 } = require('../../config');
 
-const certificateRefresh = async () => {
+const certificateRefresh = async approve => {
   logger.info(`Refreshing ${domain} certificate`);
   
   const certificatePlan = terraform.getCertificatePlan();
-  if(!await certificatePlan.apply()) {
+  if(!await certificatePlan.apply(approve)) {
     return;
   }
   

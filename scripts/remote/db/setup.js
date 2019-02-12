@@ -17,7 +17,7 @@ const createUserTemplate = path.resolve(__dirname, 'assets', 'create-user.tpl.sq
 const wpDbConfigTemplate = path.resolve(__dirname, 'assets', 'wp-db-config.tpl.php');
 
 const dbSetup = async () => {
-  logger.info('Setting up MariaDb...');
+  logger.begin('Setting up MariaDb...');
 
   const ssh = await getConnection();
   const DB_PASSWORD = randomString(32);

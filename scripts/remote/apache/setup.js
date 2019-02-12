@@ -27,7 +27,7 @@ const activeModules = [
 ];
 
 const apacheSetup = async () => {
-  logger.info('Setting up Apache...');
+  logger.begin('Setting up Apache...');
   const ssh = await getConnection();
 
   for(let module of activeModules) {

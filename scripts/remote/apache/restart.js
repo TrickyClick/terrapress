@@ -4,12 +4,12 @@ const getConnection = require('../../helpers/ssh');
 const logger = require('../../helpers/logger');
 
 const apacheRestart = async () => {
-  logger.info('Restarting Apache...');
+  logger.begin('Restarting Apache...');
 
   const ssh = await getConnection();
   await ssh.exec('service apache2 restart');
 
-  logger.success('Done!');
+  logger.success('Apache has been restarted!');
 }
 
 module.exports = apacheRestart;

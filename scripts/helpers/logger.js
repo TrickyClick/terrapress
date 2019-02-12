@@ -15,11 +15,13 @@ const logger = {
         terminal.red('FATAL ERROR: ');
         terminal.bold(trimMultiline(message) + '\n');
     },
-
     title(title) {
         terminal.brightMagenta(`${trimMultiline(title)}\n\n`);
     },
-
+    begin(message) {
+        terminal.magenta('BEGIN: ');
+        terminal.bold(trimMultiline(message) + '\n');
+    },
     error(message) {
         terminal.brightRed('ERROR: ');
         terminal.bold(trimMultiline(message) + '\n');
@@ -28,7 +30,7 @@ const logger = {
         terminal.yellow(trimMultiline(message) + ' ');
     },
     dataRow(title, value) {
-        terminal.white(`\t${title}: `);
+        terminal.white(` ${title}: `);
         terminal.gray(`${value}\n`);
     },
     warning(message) {

@@ -22,7 +22,7 @@ const {
 const templatePath = path.resolve(__dirname, 'assets', 'wp-config.tpl.php');
 
 const wordpressSetup = async () => {
-  logger.info('Setting up WordPress...');
+  logger.begin('Setting up WordPress...');
   const ssh = await getConnection();
   const targzSource = WORDPRESS_SOURCE_URL.replace(/\.zip$/, '.tar.gz');
 
