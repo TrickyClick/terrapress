@@ -1,12 +1,12 @@
 'use strict';
 
-const terminal = require('./helpers/terminal');
-const logger = require('./helpers/logger');
-const terraform = require('./helpers/terraform');
+const terminal = require('../helpers/terminal');
+const logger = require('../helpers/logger');
+const terraform = require('../helpers/terraform');
 
 const autoApprove = !!process.env.AUTO_APPROVE;
 
-const destroy = async () => {
+const remoteDestroy = async () => {
   logger.warning('Destroying the infrastructure!');
   logger.question(`Are you sure that you want to continue? Type "DESTROY" if you wish to continue:`);
 
@@ -32,9 +32,4 @@ const destroy = async () => {
 
 };
 
-destroy()
-  .then(process.exit)
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
+module.exports = remoteDestroy;

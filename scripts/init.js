@@ -21,4 +21,7 @@ init()
     logger.run('npm run local:setup', 'to setup for local dev');
     process.exit();
   })
-  .catch(console.error);
+  .catch(error => {
+    logger.fatal(error.stack);
+    process.exit(1);
+  });

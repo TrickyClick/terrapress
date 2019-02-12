@@ -4,18 +4,18 @@ const shell = require('shelljs');
 const fs = require('fs');
 const path = require('path');
 
-const { app } = require('../config');
-const { replaceLinks } = require('../helpers/strings');
-const logger = require('../helpers/logger');
-const getConnection = require('../helpers/ssh');
+const { app } = require('../../config');
+const { replaceLinks } = require('../../helpers/strings');
+const logger = require('../../helpers/logger');
+const getConnection = require('../../helpers/ssh');
 
 const {
   PATH_TEMP,
   PATH_WORDPRESS,
   LOCAL_URL,
-} = require('../config');
+} = require('../../config');
 
-const copyDb = async () => {
+const dbCopy = async () => {
   const ssh = await getConnection();
 
   logger.info('Downloading remote database...');
@@ -41,9 +41,7 @@ const copyDb = async () => {
   shell.cd(PATH_WORDPRESS);
   shell.exec(`wp --quiet db import ${tempFile}`);
 
-  return tempFile;
+  logger.success(`Imported database from ${tempFile}`);
 }
 
-copyDb()
-  .then(tempFile => logger.success(`Imported database from ${tempFile}`))
-  .catch(console.error);
+module.exports = dbCopy;
