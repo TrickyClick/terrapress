@@ -18,7 +18,7 @@ init()
   .then(() => {
     logger.success('Terrapress initialisation complete!');
     logger.run('npm run deploy', 'to setup the infrastrcture and deploy the server');
-    logger.run('npm run local:setup', 'to setup for local dev');
+    logger.run('npm run setup', 'to setup for local dev');
     process.exit();
   })
   .catch(error => {
