@@ -1,8 +1,8 @@
 'use strict';
 
-const terminal = require('../helpers/terminal');
-const logger = require('../helpers/logger');
-const terraform = require('../helpers/terraform');
+const terminal = require('./helpers/terminal');
+const logger = require('./helpers/logger');
+const terraform = require('./helpers/terraform');
 
 const autoApprove = !!process.env.AUTO_APPROVE;
 

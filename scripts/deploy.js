@@ -1,15 +1,15 @@
 'use strict';
 
-const logger = require('../helpers/logger');
-const terraform = require('../helpers/terraform');
+const logger = require('./helpers/logger');
+const terraform = require('./helpers/terraform');
 const installDependencies = require('./install');
-const certificateRefresh = require('./certificate/refresh');
-const codeClone = require('./code/clone');
-const wordpressSetup = require('./wordpress/setup');
-const dbSetup = require('./db/setup');
-const apacheSetup = require('./apache/setup');
-const apacheRestart = require('./apache/restart');
-const phpSetup = require('./php/setup');
+const certificateRefresh = require('./remote/certificate/refresh');
+const codeClone = require('./remote/code/clone');
+const wordpressSetup = require('./remote/wordpress/setup');
+const dbSetup = require('./remote/db/setup');
+const apacheSetup = require('./remote/apache/setup');
+const apacheRestart = require('./remote/apache/restart');
+const phpSetup = require('./remote/php/setup');
 
 const autoApprove = !!process.env.AUTO_APPROVE;
 
