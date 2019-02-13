@@ -9,17 +9,15 @@ const {
 } = require('../../config');
 
 const phpmyadminRemove = async() => {
-  logger.info('Removing phpMyAdmin...');
+  logger.begin('Removing phpMyAdmin...');
   const ssh = await getConnection();
 
   await ssh.exec(`rm -rf ${SERVER_PATH_WEBROOT}/phpmyadmin`);
 
-  logger.info(`phpMyAdmin is uninstalled!`);
+  logger.success(`phpMyAdmin is uninstalled!`);
 };
 
-phpmyadminRemove()
-  .then(process.exit)
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
+module.exports = {
+  run: phpmyadminRemove,
+  help: 'Uninstalls phpMyAdmin from the server',
+};

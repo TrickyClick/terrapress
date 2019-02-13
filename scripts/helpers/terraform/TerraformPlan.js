@@ -110,8 +110,8 @@ class TerraformPlan {
 
     let confirm = autoConfirm;
     if(!confirm) {
-      logger.question(this.log(`Are you sure that you want to destroy the plan?`));
-      confirm = await terminal.confirm();
+      const message = this.log(`Are you sure that you want to destroy the plan?`);
+      confirm = await logger.confirm(message);
     }
 
     if(confirm) {
@@ -142,8 +142,8 @@ class TerraformPlan {
     terminal('\n');
 
     if(!confirm) {
-      logger.question(this.log('Are you sure that you want to apply the plan?'));
-      confirm = await terminal.confirm();
+      const message = this.log('Are you sure that you want to apply the plan?');
+      confirm = await logger.confirm(message);
     }
 
     return confirm ? this.exec('apply -auto-approve').code === 0 : false;

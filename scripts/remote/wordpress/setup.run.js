@@ -65,4 +65,7 @@ const wordpressSetup = async () => {
   logger.success('WordPress is ready to go!');
 }
 
-module.exports = wordpressSetup;
+module.exports = {
+  run: wordpressSetup,
+  help: 'Installs WordPress and creates wp-config.php',
+};

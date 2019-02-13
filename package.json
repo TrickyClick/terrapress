@@ -5,11 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run exec local:start",
-    "exec": "node ./scripts/exec.js",
-    "init": "node ./scripts/init.js",
-    "deploy": "npm run exec remote:deploy",
-    "destroy": "npm run exec remote:destroy ./scripts/destroy.js",
-    "setup": "npm run exec local:setup"
+    "exec": "node ./scripts/exec.js"
   },
   "repository": {
     "type": "git",

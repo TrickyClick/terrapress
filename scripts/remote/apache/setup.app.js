@@ -52,4 +52,7 @@ const apacheSetup = async () => {
   logger.success('Apache is ready to go!');
 }
 
-module.exports = apacheSetup;
+module.exports = {
+  run: apacheSetup,
+  info: 'Configures Apache - domain, SSL, etc.',
+};

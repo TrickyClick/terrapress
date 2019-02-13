@@ -12,4 +12,7 @@ const apacheRestart = async () => {
   logger.success('Apache has been restarted!');
 }
 
-module.exports = apacheRestart;
+module.exports = {
+  run: apacheRestart,
+  help: 'Restarts Apache on the remote server',
+};

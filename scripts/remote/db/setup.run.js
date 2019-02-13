@@ -38,4 +38,7 @@ const dbSetup = async () => {
   logger.success('MariaDb configured successfully')
 };
 
-module.exports = dbSetup;
+module.exports = {
+  run: dbSetup,
+  help: 'Creates the database account and configures WordPress with it',
+};

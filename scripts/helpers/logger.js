@@ -29,12 +29,20 @@ const logger = {
     question(message) {
         terminal.yellow(trimMultiline(message) + ' ');
     },
+    confirm(message, autoConfirm = false) {
+        terminal.question(message);
+        return terminal.confirm(autoConfirm);
+    },
     dataRow(title, value) {
         terminal.white(` ${title}: `);
         terminal.gray(`${value}\n`);
     },
     warning(message) {
         terminal.gray('WARNING: ');
+        terminal.bold(trimMultiline(message) + '\n');
+    },
+    skipping(message) {
+        terminal.gray('SKIPPING: ');
         terminal.bold(trimMultiline(message) + '\n');
     },
     info(message) {

@@ -4,6 +4,7 @@ const logger = require('../../helpers/logger');
 const getConnection = require('../../helpers/ssh');
 const {
   app: {
+    domain,
     SERVER_PATH_CODEBASE,
     SERVER_PATH_WEBROOT,
   },
@@ -15,11 +16,12 @@ const dist = '4.8.4-english';
 const sourceUrl = `https://files.phpmyadmin.net/phpMyAdmin/4.8.4/phpMyAdmin-${dist}.tar.gz`;
 
 const phpmyadminInstall = async() => {
-  logger.info('Installing phpMyAdmin...');
+  logger.begin('Installing phpMyAdmin...');
   const ssh = await getConnection();
 
-  const tmp = `${SERVER_PATH_CODEBASE}/.tmp/phpmyadmin`;
-  const dest = `${SERVER_PATH_WEBROOT}/phpmyadmin`;
+  const dirname = 'phpmyadmin';
+  const tmp = `${SERVER_PATH_CODEBASE}/.tmp/${dirname}`;
+  const dest = `${SERVER_PATH_WEBROOT}/${dirname}`;
 
   if(await ssh.directoryExists(dest)) {
     logger.warning(`Path ${dest} already exists.`);
@@ -34,14 +36,10 @@ const phpmyadminInstall = async() => {
   await ssh.exec(`chown -R ${WEB_USER_NAME}:${WEB_USER_GROUP} ${dest}`);
   await ssh.exec(`rm -rf ${tmp}`);
 
-  logger.success(`phpMyAdmin ${dist} is installed!`);
+  logger.success(`Installed at https://${domain}/${dirname}!`);
 };
 
-module.exports = phpmyadminInstall;
-
-phpmyadminInstall()
-  .then(process.exit)
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
+module.exports = {
+  run: phpmyadminInstall,
+  help: 'Installs phpMyAdmin on the server',
+};

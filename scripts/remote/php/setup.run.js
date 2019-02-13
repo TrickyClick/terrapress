@@ -21,4 +21,7 @@ const phpSetup = async() => {
   logger.success('PHP is ready to go!');
 };
 
-module.exports = phpSetup;
+module.exports = {
+  run: phpSetup,
+  help: 'Configures the server php.ini',
+};

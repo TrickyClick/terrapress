@@ -21,7 +21,7 @@ const askCertificateSaveLocation = () => {
   return terminal.textInput(path.resolve(PATH_SSH, 'id_rsa'));
 };
 
-const init = async () => {
+const initSecrets = async () => {
   let secrets = {};
 
   logger.title('Secrets Configuration');
@@ -36,8 +36,7 @@ const init = async () => {
   if(fs.existsSync(PATH_SECRETS)) {
     secrets = require(PATH_SECRETS);
     logger.info(`Configuration found in ${PATH_SECRETS}`);
-    logger.question('Do you want to overwrite it?');
-    const overwrite = await terminal.confirm(true);
+    const overwrite = await logger.confirm('Do you want to overwrite it?', true);
 
     if(!overwrite) {
       return;
@@ -65,9 +64,8 @@ const init = async () => {
     }
 
     if(!certificatePath) {
-      logger.warning('No private/public key pair found, do you want')
-      logger.question('Do you want to generate a new one?');
-      const generateCertificate = await terminal.confirm(true);
+      logger.warning('No private/public key pair found!')
+      const generateCertificate = await logger.confirm('Do you want to generate a new one?', true);
 
       if(generateCertificate) {
         if(!shell.which('ssh-keygen')) {
@@ -78,9 +76,8 @@ const init = async () => {
 
           while(shell.test('-f', certificatePath) && !overwriteKey) {
             logger.warning(`Key ${certificatePath} already exists.`);
-            logger.question('Do you want to overwrite it?');
-          
-            overwriteKey = await terminal.confirm(false);
+
+            overwriteKey = await logger.confirm('Do you want to overwrite it?');
             if(!overwriteKey) {
               certificatePath = await askCertificateSaveLocation();
             }
@@ -114,12 +111,13 @@ const init = async () => {
     logger.dataRow(key, secrets[key])
   );
   
-  logger.question('Does this look OK?');
-  const confirm = await terminal.confirm(true);
-  
+  const confirm = logger.confirm('Does this look OK?', true);
   if(confirm) {
     fs.writeFileSync(PATH_SECRETS, JSON.stringify(secrets));
   }
 }
 
-module.exports = init;
+module.exports = {
+  run: initSecrets,
+  help: 'Configures secrets.json (required for DevOps scripts)',
+};

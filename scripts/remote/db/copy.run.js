@@ -18,7 +18,7 @@ const {
 const dbCopy = async () => {
   const ssh = await getConnection();
 
-  logger.info('Downloading remote database...');
+  logger.begin('Downloading remote database...');
   const output = await ssh.exec('wp --allow-root --quiet db export /dev/stdout', [], {
     cwd: app.webRoot
   });
@@ -44,4 +44,7 @@ const dbCopy = async () => {
   logger.success(`Imported database from ${tempFile}`);
 }
 
-module.exports = dbCopy;
+module.exports = {
+  run: dbCopy,
+  help: 'Overwrites local database with remote one',
+};

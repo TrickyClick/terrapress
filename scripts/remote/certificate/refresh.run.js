@@ -36,4 +36,7 @@ const certificateRefresh = async approve => {
   logger.success('SSL certificate is fresh & clean!');
 }
 
-module.exports = certificateRefresh;
+module.exports = {
+  run: certificateRefresh,
+  help: 'Refreshes the domain SSL certificate (requires CloudFlare)',
+};

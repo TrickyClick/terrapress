@@ -58,8 +58,7 @@ const initApp = async () => {
   if(fs.existsSync(PATH_APP_CONFIG)) {
     config = require(PATH_APP_CONFIG);
     logger.info(`Configuration found in "${PATH_APP_CONFIG}"`);
-    logger.question('Do you want to overwrite it?');
-    const overwrite = await terminal.confirm(true);
+    const overwrite = await logger.confirm('Do you want to overwrite it?', true);
 
     if(!overwrite) {
       return;
@@ -103,12 +102,14 @@ const initApp = async () => {
     logger.dataRow(key, data[key])
   );
   
-  logger.question('\nDoes this look OK?');
-  const confirm = await terminal.confirm(true);
+  const confirm = await logger.confirm('\nDoes this look OK?', true);
   
   if(confirm) {
     fs.writeFileSync(PATH_APP_CONFIG, JSON.stringify(data));
   }
 }
 
-module.exports = initApp;
+module.exports = {
+  run: initApp,
+  help: 'Configures app.json (required for DevOps)',
+};
