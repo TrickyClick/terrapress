@@ -13,7 +13,7 @@ const phpSetup = require('./remote/php/setup');
 
 const autoApprove = !!process.env.AUTO_APPROVE;
 
-const remoteDeploy = async () => {
+const deploy = async () => {
   logger.begin('Deplying infrastructure & code');
 
   const sshPlan = terraform.getSshPlan();
@@ -31,14 +31,17 @@ const remoteDeploy = async () => {
   const githubPlan = await terraform.getGithubPlan();
   await githubPlan.apply(applyServicePlan);
 
-  await codeClone();
-  await wordpressSetup();
-  await dbSetup();
-  await apacheSetup();
-  await phpSetup();
-  await apacheRestart();
+  await codeClone.run();
+  await wordpressSetup.run();
+  await dbSetup.run();
+  await apacheSetup.run();
+  await phpSetup.run();
+  await apacheRestart.run();
 
   logger.success('Deployment complete!');
-}
+};
 
-module.exports = remoteDeploy;
+module.exports = {
+  run: deploy,
+  help: 'Creates infrastructure, setups server and installs WordPress',
+}

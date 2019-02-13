@@ -1,8 +1,8 @@
 'use trict';
 
-const { app } = require('./config');
-const logger = require('./helpers/logger');
-const getConnection = require('./helpers/ssh');
+const { app } = require('../config');
+const logger = require('../helpers/logger');
+const getConnection = require('../helpers/ssh');
 
 const dependencies = [
   'mariadb-client',
@@ -20,7 +20,7 @@ const dependencies = [
 const installDependencies = async() => {
   const ssh = await getConnection();
 
-  logger.info('Installing server dependencies...');
+  logger.begin('Installing server dependencies');
   logger.info('Updating aptitude');
   await ssh.exec('apt-get -qq update');
 
@@ -41,4 +41,7 @@ const installDependencies = async() => {
   logger.success('Installation complete');
 };
 
-module.exports = installDependencies;
+module.exports = {
+  run: installDependencies,
+  help: 'Installs all server dependencies, such as git, curl, Apache, MariaDb...',
+};

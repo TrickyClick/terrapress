@@ -6,7 +6,7 @@ const terraform = require('./helpers/terraform');
 
 const autoApprove = !!process.env.AUTO_APPROVE;
 
-const remoteDestroy = async () => {
+const destroy = async () => {
   logger.warning('Destroying the infrastructure!');
   logger.question(`Are you sure that you want to continue? Type "DESTROY" if you wish to continue:`);
 
@@ -29,7 +29,9 @@ const remoteDestroy = async () => {
   } else {
     logger.success('Infrastructure was destroyed!')
   }
-
 };
 
-module.exports = remoteDestroy;
+module.exports = {
+  run: destroy,
+  help: 'Destroys the infrastructure and the configured website',
+};
