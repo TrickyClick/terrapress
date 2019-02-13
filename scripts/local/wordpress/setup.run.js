@@ -21,6 +21,7 @@ const checkFiles = [
 const setupWordpress = async () => {
   const timestamp = Math.floor(Date.now() / 1000);
 
+  logger.begin('Installing Wordpress')
   if(shell.test('-d', PATH_WORDPRESS)) {
     logger.info(`Backing up old WordPress files in ${PATH_WORDPRESS}`);
 
@@ -62,6 +63,11 @@ const setupWordpress = async () => {
 
   logger.info('Linking content...');
   shell.ln('-s', PATH_SRC, wpContent);
+
+  logger.success('Latest WordPress installed');
 }
 
-module.exports = setupWordpress;
+module.exports = {
+  run: setupWordpress,
+  help: 'Install WordPress (preserves previous install and config)',
+};

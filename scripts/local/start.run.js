@@ -12,7 +12,7 @@ const {
 
 const phpVersionRegex = /^php ([0-9]+\.[0-9]+)\./i;
 
-const localStart = async () => {
+const start = async () => {
   if(!shell.test('-d', PATH_WORDPRESS)) {
     logger.fatal('WordPress is not installed');
     logger.info('Run "npm run local:setup" to prepare it');
@@ -41,4 +41,7 @@ const localStart = async () => {
   shell.exec(`php -S ${SERVER_HOST}:${SERVER_PORT}`);
 }
 
-module.exports = localStart;
+module.exports = {
+  run: start,
+  info: 'Starts local dev server (requires PHP and MySQL)',
+};
