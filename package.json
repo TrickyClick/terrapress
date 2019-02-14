@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run exec local:start",
+    "precommit": "npm run lint",
+    "lint": "eslint ./scripts",
     "exec": "node ./scripts/exec.js"
   },
   "repository": {
@@ -33,5 +35,11 @@
     "shelljs": "^0.8.3",
     "terminal-kit": "^1.26.11",
     "unzip": "^0.1.11"
+  },
+  "devDependencies": {
+    "eslint": "^5.13.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "husky": "^1.3.1"
   }
 }

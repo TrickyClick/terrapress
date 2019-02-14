@@ -1,4 +1,4 @@
-'use strict';
+
 
 const logger = require('../../helpers/logger');
 const getConnection = require('../../helpers/ssh');
@@ -15,7 +15,7 @@ const {
 const dist = '4.8.4-english';
 const sourceUrl = `https://files.phpmyadmin.net/phpMyAdmin/4.8.4/phpMyAdmin-${dist}.tar.gz`;
 
-const phpmyadminInstall = async() => {
+const phpmyadminInstall = async () => {
   logger.begin('Installing phpMyAdmin...');
   const ssh = await getConnection();
 
@@ -23,7 +23,7 @@ const phpmyadminInstall = async() => {
   const tmp = `${SERVER_PATH_CODEBASE}/.tmp/${dirname}`;
   const dest = `${SERVER_PATH_WEBROOT}/${dirname}`;
 
-  if(await ssh.directoryExists(dest)) {
+  if (await ssh.directoryExists(dest)) {
     logger.warning(`Path ${dest} already exists.`);
     logger.warning('Aborting.');
     return;

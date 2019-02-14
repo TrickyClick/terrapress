@@ -1,18 +1,18 @@
-'use strict';
+
 
 const { terminal } = require('terminal-kit');
 
 const terminate = () => {
-  terminal.grabInput(false) ;
+  terminal.grabInput(false);
   terminal.bold('\n\nAborting...\n');
   setTimeout(process.exit, 500);
-}
+};
 
-terminal.on('key', name => name === 'CTRL_C' ? terminate() : {});
+terminal.on('key', name => (name === 'CTRL_C' ? terminate() : {}));
 terminal.confirm = async (defautlYes = false) => {
   const options = {
     yes: ['Y', 'y'],
-    no: ['N', 'n']
+    no: ['N', 'n'],
   };
 
   const enterTarget = defautlYes ? options.yes : options.no;
@@ -25,7 +25,7 @@ terminal.confirm = async (defautlYes = false) => {
   terminal(`${result ? 'yes' : 'no'}\n\n`);
 
   return result;
-}
+};
 
 terminal.textInput = async (defaultValue, echoChar = false) => {
   const value = await terminal.inputField({
@@ -36,12 +36,11 @@ terminal.textInput = async (defaultValue, echoChar = false) => {
 
   terminal('\n');
   return value;
-}
+};
 
-terminal.passwordInput = defaultValue =>
-  terminal.textInput(defaultValue, true);
+terminal.passwordInput = defaultValue => terminal.textInput(defaultValue, true);
 
-terminal.select = async options => {
+terminal.select = async (options) => {
   const value = await terminal.singleColumnMenu(options, {
     cancelable: true,
     leftPadding: '    ',
@@ -50,6 +49,6 @@ terminal.select = async options => {
   terminal('\n');
 
   return value;
-}
+};
 
 module.exports = terminal;

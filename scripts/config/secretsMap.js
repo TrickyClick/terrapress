@@ -9,6 +9,6 @@ const secretsMap = {
   DIGITALOCEAN_TOKEN: 'DigitalOcean access token',
   CLOUDFLARE_EMAIL: 'Cloudflare account e-mail',
   CLOUDFLARE_TOKEN: 'Cloudflare global token',
-}
+};
 
 module.exports = secretsMap;

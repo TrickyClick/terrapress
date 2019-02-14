@@ -1,4 +1,4 @@
-'use strict';
+
 
 const path = require('path');
 
@@ -26,7 +26,7 @@ const wordpressSetup = async () => {
   const ssh = await getConnection();
   const targzSource = WORDPRESS_SOURCE_URL.replace(/\.zip$/, '.tar.gz');
 
-  if(!await ssh.directoryExists(SERVER_PATH_WEBROOT)) {
+  if (!await ssh.directoryExists(SERVER_PATH_WEBROOT)) {
     const temp = `${SERVER_PATH_CODEBASE}/.tmp/wordpress-dump-${Date.now()}`;
     const tempFile = `${temp}/latest.tar.gz`;
 
@@ -41,7 +41,7 @@ const wordpressSetup = async () => {
     await ssh.exec('rm -rf wordpress/wp-content wordpress/wp-config-sample.php', [], { cwd: temp });
     await ssh.exec(`mkdir -p ${SERVER_PATH_WEBROOT}`);
     await ssh.exec(`mv wordpress/* ${SERVER_PATH_WEBROOT}/`, [], { cwd: temp });
-    await ssh.exec(`ln -s ${SERVER_PATH_CODEBASE}/src ${SERVER_PATH_WEBROOT}/wp-content`)
+    await ssh.exec(`ln -s ${SERVER_PATH_CODEBASE}/src ${SERVER_PATH_WEBROOT}/wp-content`);
 
     logger.info('Removing temp');
     await ssh.exec(`rm -rf ${temp}`);
@@ -55,7 +55,7 @@ const wordpressSetup = async () => {
     DB_NAME,
     domain,
     secret: () => randomString(40),
-  })
+  });
 
   await ssh.pushToFile(wpConfig, SERVER_PATH_WP_CONFIG);
 
@@ -63,7 +63,7 @@ const wordpressSetup = async () => {
   await ssh.exec(`chown -R ${WEB_USER_NAME}:${WEB_USER_GROUP} .`, [], { cwd: SERVER_PATH_WEBROOT });
 
   logger.success('WordPress is ready to go!');
-}
+};
 
 module.exports = {
   run: wordpressSetup,

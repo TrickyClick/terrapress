@@ -12,9 +12,9 @@ const {
     supportEmail,
     SERVER_PATH_WEBROOT,
     SSL_PRIVATE_KEY,
-    SSL_CERTIFICATE ,
+    SSL_CERTIFICATE,
     SSL_CHAIN_FILE,
-  }
+  },
 } = require('../../config');
 
 const sitesEnabled = '/etc/apache2/sites-enabled';
@@ -24,14 +24,14 @@ const activeModules = [
   'php7.0',
   'rewrite',
   'ssl',
-  'http2'
+  'http2',
 ];
 
 const apacheSetup = async () => {
   logger.begin('Setting up Apache...');
   const ssh = await getConnection();
 
-  for(let module of activeModules) {
+  for (const module of activeModules) {
     logger.info(`Enabling Apache mod-${module}`);
     await ssh.exec(`a2enmod ${module}`);
   }
@@ -42,7 +42,7 @@ const apacheSetup = async () => {
     supportEmail,
     SERVER_PATH_WEBROOT,
     SSL_PRIVATE_KEY,
-    SSL_CERTIFICATE ,
+    SSL_CERTIFICATE,
     SSL_CHAIN_FILE,
   });
 
@@ -52,7 +52,7 @@ const apacheSetup = async () => {
 
   logger.success('Apache is ready to go!');
   await apacheRestart.run();
-}
+};
 
 module.exports = {
   run: apacheSetup,

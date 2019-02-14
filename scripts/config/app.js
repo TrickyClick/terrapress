@@ -1,18 +1,19 @@
-'use strict';
+
 
 const fs = require('fs');
 
 const logger = require('../helpers/logger');
+
 let app;
 
-const getAppConfig = configPath => {
-  if(!app) {
-    if(!fs.existsSync(configPath)) {
+const getAppConfig = (configPath) => {
+  if (!app) {
+    if (!fs.existsSync(configPath)) {
       logger.fatal(`${configPath} was not found.`);
       logger.info('Run "npm run init" to set it up');
       process.exit();
     }
-    
+
     app = require(configPath);
 
     app.SERVER_PATH_CODEBASE = `/var/www/${app.domain}`;
@@ -22,7 +23,7 @@ const getAppConfig = configPath => {
 
     app.SERVER_PATH_CERTIFICATES = `/etc/ssl/${app.domain}`;
     app.SSL_PRIVATE_KEY = `${app.SERVER_PATH_CERTIFICATES}/${app.domain}.pem`;
-    app.SSL_CERTIFICATE  = `${app.SERVER_PATH_CERTIFICATES}/${app.domain}.crt`;
+    app.SSL_CERTIFICATE = `${app.SERVER_PATH_CERTIFICATES}/${app.domain}.crt`;
     app.SSL_CHAIN_FILE = `${app.SERVER_PATH_CERTIFICATES}/DigiCertCA.crt`;
   }
 
@@ -30,4 +31,3 @@ const getAppConfig = configPath => {
 };
 
 module.exports = getAppConfig;
-  

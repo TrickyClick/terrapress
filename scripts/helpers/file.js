@@ -9,41 +9,39 @@ const logger = require('./logger');
 
 const isHttps = /^https:\/\//i;
 
-const download = (url, dest) => 
-  new Promise((resolve, reject) => {
-    shell.mkdir('-p', path.dirname(dest));
+const download = (url, dest) => new Promise((resolve, reject) => {
+  shell.mkdir('-p', path.dirname(dest));
 
-    const lib = isHttps.test(url) ? https : http;
-    const output = fs.createWriteStream(dest);
+  const lib = isHttps.test(url) ? https : http;
+  const output = fs.createWriteStream(dest);
 
-    logger.info(`Downloading: ${url}`);
+  logger.info(`Downloading: ${url}`);
 
-    const request = lib.get(url, res => {
-      res.pipe(output);
-      output.on('finish', () => {
-        output.close();
-        return resolve(dest);
-      });
-    })
-      
-    request.on('error', error => {
+  const request = lib.get(url, (res) => {
+    res.pipe(output);
+    output.on('finish', () => {
       output.close();
-      fs.unlink(dest);
-      return reject(error);
+      return resolve(dest);
     });
   });
 
-const unzip = (source, dest) =>
-  new Promise((resolve, reject) => {
-    shell.mkdir('-p', path.dirname(dest));
-
-    logger.info(`Unzipping: ${source}`);
-
-    fs.createReadStream(source)
-      .pipe(unzipLib.Extract({ path: dest }))
-      .on('finish', resolve)
-      .on('error', reject)
+  request.on('error', (error) => {
+    output.close();
+    fs.unlink(dest);
+    return reject(error);
   });
+});
+
+const unzip = (source, dest) => new Promise((resolve, reject) => {
+  shell.mkdir('-p', path.dirname(dest));
+
+  logger.info(`Unzipping: ${source}`);
+
+  fs.createReadStream(source)
+    .pipe(unzipLib.Extract({ path: dest }))
+    .on('finish', resolve)
+    .on('error', reject);
+});
 
 module.exports = {
   download,

@@ -1,4 +1,4 @@
-'use strict';
+
 
 const logger = require('./helpers/logger');
 const terraform = require('./helpers/terraform');
@@ -8,7 +8,6 @@ const codeClone = require('./remote/code/clone.run');
 const wordpressSetup = require('./remote/wordpress/setup.run');
 const dbSetup = require('./remote/db/setup.run');
 const apacheSetup = require('./remote/apache/setup.run');
-const apacheRestart = require('./remote/apache/restart.run');
 const phpSetup = require('./remote/php/setup.run');
 
 const autoApprove = !!process.env.AUTO_APPROVE;
@@ -22,7 +21,7 @@ const deploy = async () => {
   const servicePlan = terraform.getServicePlan();
   const applyServicePlan = await servicePlan.apply(autoApprove);
 
-  if(applyServicePlan) {
+  if (applyServicePlan) {
     await installDependencies.run();
   }
 
@@ -43,4 +42,4 @@ const deploy = async () => {
 module.exports = {
   run: deploy,
   help: 'Creates infrastructure, setups server and installs WordPress',
-}
+};

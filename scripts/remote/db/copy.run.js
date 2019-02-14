@@ -1,4 +1,4 @@
-'use strict';
+
 
 const shell = require('shelljs');
 const fs = require('fs');
@@ -20,7 +20,7 @@ const dbCopy = async () => {
 
   logger.begin('Downloading remote database...');
   const output = await ssh.exec('wp --allow-root --quiet db export /dev/stdout', [], {
-    cwd: app.webRoot
+    cwd: app.webRoot,
   });
 
   ssh.dispose();
@@ -42,7 +42,7 @@ const dbCopy = async () => {
   shell.exec(`wp --quiet db import ${tempFile}`);
 
   logger.success(`Imported database from ${tempFile}`);
-}
+};
 
 module.exports = {
   run: dbCopy,

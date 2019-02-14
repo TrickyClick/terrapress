@@ -1,7 +1,8 @@
-'use strict';
+
 
 const TerraformPlan = require('./TerraformPlan');
 const { app, secrets } = require('../../config');
+
 const {
   DIGITALOCEAN_TOKEN,
   SSH_KEY_NAME,
@@ -17,7 +18,7 @@ module.exports = {
     return new TerraformPlan('ssh', {
       DIGITALOCEAN_TOKEN,
       SSH_KEY_NAME,
-      SSH_PUBLIC_KEY
+      SSH_PUBLIC_KEY,
     });
   },
   getServicePlan() {
@@ -27,7 +28,7 @@ module.exports = {
       DOMAIN: app.domain,
       DIGITALOCEAN_TOKEN,
       CLOUDFLARE_EMAIL,
-      CLOUDFLARE_TOKEN
+      CLOUDFLARE_TOKEN,
     });
   },
   getCertificatePlan() {
@@ -45,10 +46,10 @@ module.exports = {
 
     try {
       const ssh = await getConnection();
-      if(await ssh.fileExists(pubKey)) {
+      if (await ssh.fileExists(pubKey)) {
         SERVER_KEY = await ssh.exec(`cat ${pubKey}`);
       }
-    } catch(e) { }  
+    } catch (e) { }
 
     return new TerraformPlan('github', {
       GITHUB_REPOSITORY: app.repository,

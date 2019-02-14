@@ -1,4 +1,4 @@
-'use strict';
+
 
 const pkg = require('../package.json');
 const logger = require('./helpers/logger');
@@ -8,8 +8,8 @@ const initSecrets = require('./init/secrets.run');
 const init = async () => {
   logger.info(
     `Welcome to ultimate-wordpress's configurator script
-    Please follow the instructions`
-  )
+    Please follow the instructions`,
+  );
 
   await initApp.run();
   await initSecrets.run();
@@ -17,7 +17,7 @@ const init = async () => {
   logger.success('Terrapress initialisation complete!');
   logger.run('npm run exec deploy', 'to setup the infrastrcture and deploy the server');
   logger.run('npm run exed local:setup', 'to setup for local dev');
-}
+};
 
 module.exports = {
   run: init,

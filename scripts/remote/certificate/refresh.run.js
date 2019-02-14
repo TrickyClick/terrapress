@@ -1,4 +1,4 @@
-'use strict';
+
 
 const path = require('path');
 
@@ -11,18 +11,18 @@ const {
     domain,
     SSL_PRIVATE_KEY,
     SSL_CERTIFICATE,
-    SSL_CHAIN_FILE
-  }
+    SSL_CHAIN_FILE,
+  },
 } = require('../../config');
 
-const certificateRefresh = async approve => {
+const certificateRefresh = async (approve) => {
   logger.info(`Refreshing ${domain} certificate`);
-  
+
   const certificatePlan = terraform.getCertificatePlan();
-  if(!await certificatePlan.apply(approve)) {
+  if (!await certificatePlan.apply(approve)) {
     return;
   }
-  
+
   logger.info('Uploading new SSL certificates');
   const ssh = await getConnection();
   ssh.exec(`mkdir -p ${path.dirname(SSL_PRIVATE_KEY)}`);
@@ -36,7 +36,7 @@ const certificateRefresh = async approve => {
 
   logger.success('SSL certificate is fresh & clean!');
   await apacheRestart.run();
-}
+};
 
 module.exports = {
   run: certificateRefresh,

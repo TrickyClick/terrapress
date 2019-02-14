@@ -1,4 +1,4 @@
-'use strict';
+
 
 const logger = require('./helpers/logger');
 const terraform = require('./helpers/terraform');
@@ -9,7 +9,7 @@ const destroy = async () => {
   logger.warning('Destroying the infrastructure!');
   const confirm = await logger.textInput('Type "DESTROY", if you wish to continue:');
 
-  if(!/^destroy$/gi.test(confirm)) {
+  if (!/^destroy$/gi.test(confirm)) {
     logger.warning('Aborting.');
     return;
   }
@@ -22,10 +22,10 @@ const destroy = async () => {
   logger.warning('YOUR SERVER WILL STOP TO EXIST! NO RETURN BEYOND THIS POINT!');
   logger.warning('-------------------------------------------------------------');
 
-  if(!await terraform.getServicePlan().destroy()) {
+  if (!await terraform.getServicePlan().destroy()) {
     logger.warning('Aborting.');
   } else {
-    logger.success('Infrastructure was destroyed!')
+    logger.success('Infrastructure was destroyed!');
   }
 };
 
