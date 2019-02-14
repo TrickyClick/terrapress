@@ -16,5 +16,17 @@ install the dependencies and run the init script.
 git clone git@github.com:TrickClick/terrapress.git
 cd terrapress
 npm install
-npm run init
+npm run exec init
+npm run exec local:wordpress:setup
+npm start
+```
+
+## Running commands
+All commands are executed using `npm run exec <command>`. Executing
+`npm run exec help` will give you more details. Some of the more
+important ones:
+
+```
+npm run exec deploy     # creates the infrastructure
+npm run exec destroy    # destroys the infrastructure
 ```
