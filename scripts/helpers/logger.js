@@ -2,7 +2,7 @@
 
 const terminal = require('./terminal');
 
-const trimMultiline = str => {
+const trimMultiline = (str = '') => {
     const lines = str.split('\n').map(line => line.trim());
     const nonEmptyLines = lines.filter(l => l.trim() !== '');
     const terminator = nonEmptyLines.length > 1 ? '\n' : '';
@@ -30,11 +30,19 @@ const logger = {
         terminal.yellow(trimMultiline(message) + ' ');
     },
     confirm(message, autoConfirm = false) {
-        terminal.question(message);
+        logger.question(message);
         return terminal.confirm(autoConfirm);
     },
-    dataRow(title, value) {
-        terminal.white(` ${title}: `);
+    textInput(message, defaultValue = '') {
+        logger.question(message);
+        return terminal.textInput(message, defaultValue);
+    },
+    passwordInput(message, defaultValue = '') {
+        logger.question(message);
+        return terminal.passwordInput(message, defaultValue);
+    },
+    dataRow(title, value, indent = ' ', separator = ':') {
+        terminal.white(`${indent}${title}${separator} `);
         terminal.gray(`${value}\n`);
     },
     warning(message) {
@@ -63,7 +71,13 @@ const logger = {
         terminal.bold(trimMultiline(message) + '\n');
 
         return new Promise(r => setTimeout(r, seconds * 1000));
-    }
+    },
+    empty(n = 1) {
+        let str = '';
+        while(!isNaN(n) && n-- > 0) str += '\n';
+
+        str && terminal(str);
+    },
 }
 
 module.exports = logger;

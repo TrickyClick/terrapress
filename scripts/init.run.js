@@ -2,8 +2,8 @@
 
 const pkg = require('../package.json');
 const logger = require('./helpers/logger');
-const initApp = require('./init/app');
-const initSecrets = require('./init/secrets');
+const initApp = require('./init/app.run');
+const initSecrets = require('./init/secrets.run');
 
 const init = async () => {
   logger.info(
@@ -11,8 +11,8 @@ const init = async () => {
     Please follow the instructions`
   )
 
-  await initApp();
-  await initSecrets();
+  await initApp.run();
+  await initSecrets.run();
 
   logger.success('Terrapress initialisation complete!');
   logger.run('npm run exec deploy', 'to setup the infrastrcture and deploy the server');

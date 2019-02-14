@@ -38,6 +38,9 @@ terminal.textInput = async (defaultValue, echoChar = false) => {
   return value;
 }
 
+terminal.passwordInput = defaultValue =>
+  terminal.textInput(defaultValue, true);
+
 terminal.select = async options => {
   const value = await terminal.singleColumnMenu(options, {
     cancelable: true,

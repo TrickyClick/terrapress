@@ -1,5 +1,6 @@
 'use strict';
 
+const apacheRestart = require('../apache/restart.run');
 const logger = require('../../helpers/logger');
 const getConnection = require('../../helpers/ssh');
 const { SERVER_UPLOAD_LIMIT_MB } = require('../../config');
@@ -19,6 +20,7 @@ const phpSetup = async() => {
   );
 
   logger.success('PHP is ready to go!');
+  await apacheRestart.run();
 };
 
 module.exports = {

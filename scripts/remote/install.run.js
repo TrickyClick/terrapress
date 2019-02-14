@@ -17,6 +17,10 @@ const dependencies = [
   'curl',
 ];
 
+const certificatesPath = '$HOME/.ssh/id_rsa';
+const wpCliPath = '/usr/local/bin/wp';
+const wpCliUrl = 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar';
+
 const installDependencies = async() => {
   const ssh = await getConnection();
 
@@ -29,12 +33,16 @@ const installDependencies = async() => {
     await ssh.exec(`DEBIAN_FRONTEND=noninteractive apt-get -qq install ${dependency}`);
   }
 
-  const remoteCertPath = '$HOME/.ssh/id_rsa';
-
-  if(!await ssh.fileExists(remoteCertPath)) {
+  if(!await ssh.fileExists(certificatesPath)) {
     logger.info(`Generating server SSH key`);
-    const cmd = `yes y | ssh-keygen -b 2048 -N "" -m PEM -t rsa -C "${app.domain}" -f "${remoteCertPath}"`;
+    const cmd = `yes y | ssh-keygen -b 2048 -N "" -m PEM -t rsa -C "${app.domain}" -f "${certificatesPath}"`;
     await ssh.exec(cmd);
+  }
+
+  logger.info('Installing WordPress CLI');
+  if(!await ssh.fileExists(wpCliPath)) {
+    await ssh.exec(`curl -s -o ${wpCliPath} ${wpCliUrl}`);
+    await ssh.exec(`chmod +x ${wpCliPath}`);
   }
 
   await ssh.exec(`git config --global core.editor "vim"`);

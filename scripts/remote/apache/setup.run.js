@@ -2,6 +2,7 @@
 
 const path = require('path');
 
+const apacheRestart = require('./restart.run');
 const logger = require('../../helpers/logger');
 const getConnection = require('../../helpers/ssh');
 const { renderTemplate } = require('../../helpers/strings');
@@ -50,9 +51,10 @@ const apacheSetup = async () => {
   await ssh.exec(`a2ensite ${domain}`);
 
   logger.success('Apache is ready to go!');
+  await apacheRestart.run();
 }
 
 module.exports = {
   run: apacheSetup,
-  info: 'Configures Apache - domain, SSL, etc.',
+  help: 'Configures Apache - domain, SSL, etc.',
 };

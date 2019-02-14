@@ -3,7 +3,6 @@
 const fs = require('fs');
 
 const { PATH_APP_CONFIG } = require('../config');
-const terminal = require('../helpers/terminal');
 const logger = require('../helpers/logger');
 
 const sshRepoRegex = /^.*@[a-z0-9\-]{2,}\.[a-z]{2,}(\.[a-z]{2,})?:.*\/.*\.git$/i;
@@ -16,19 +15,16 @@ const isValidRepoUrl = url =>
   sshRepoRegex.test(url) || httpRepoRegex.test(url);
 
 const askForDomain = async defaultValue => {
-  logger.question('Domain name:');
-  return terminal.textInput(defaultValue)
-    .then(value => value.replace(/^www\./i, ''));
+  const input = await logger.textInput('Domain name:', defaultValue);
+  return input.replace(/^www\./i, '');
 }
 
-const askForSupportEmail = async defaultValue => {
-  logger.question('Support email:');
-  return terminal.textInput(defaultValue);
+const askForSupportEmail = defaultValue => {
+  return logger.textInput('Support email:', defaultValue);
 }
 
 const askRepository = defaultValue => {
-  logger.question(`Git repository URL: `);
-  return terminal.textInput(defaultValue || 'git@github.com:');
+  logger.textInput(`Git repository URL: `, defaultValue || 'git@github.com:');
 }
 
 const parseRepositoryUrl = url => {

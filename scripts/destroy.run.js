@@ -1,6 +1,5 @@
 'use strict';
 
-const terminal = require('./helpers/terminal');
 const logger = require('./helpers/logger');
 const terraform = require('./helpers/terraform');
 
@@ -8,9 +7,8 @@ const autoApprove = !!process.env.AUTO_APPROVE;
 
 const destroy = async () => {
   logger.warning('Destroying the infrastructure!');
-  logger.question(`Are you sure that you want to continue? Type "DESTROY" if you wish to continue:`);
+  const confirm = await logger.textInput('Type "DESTROY", if you wish to continue:');
 
-  const confirm = await terminal.textInput();
   if(!/^destroy$/gi.test(confirm)) {
     logger.warning('Aborting.');
     return;

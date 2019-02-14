@@ -11,15 +11,8 @@ const logger = require('../helpers/logger');
 
 const pubCertRegex = /\.pub$/;
 
-const input = (message, defaultValue, echoChar = false) => {
-  logger.question(message);
-  return terminal.textInput(defaultValue, echoChar);
-}
-
-const askCertificateSaveLocation = () => {
-  logger.question('Save as:');
-  return terminal.textInput(path.resolve(PATH_SSH, 'id_rsa'));
-};
+const askCertificateSaveLocation = () =>
+  logger.textInput('Save as:', path.resolve(PATH_SSH, 'id_rsa'));
 
 const initSecrets = async () => {
   let secrets = {};
@@ -51,7 +44,7 @@ const initSecrets = async () => {
         .map(str => str.replace(pubCertRegex, ''));
 
       if(certificates.length) {
-        logger.info(`These keys were found in ${PATH_SSH}, select one:`)
+        logger.info(`These keys were found in ${PATH_SSH}, select one:`);
 
         certificates.push('Skip selection...');
 
@@ -83,8 +76,7 @@ const initSecrets = async () => {
             }
           }
           
-          logger.question('Enter passphrase (Optional):');
-          const passphrase = await terminal.textInput('', true);
+          const passphrase = await logger.passwordInput('Enter passphrase (Optional):');
 
           shell.rm([certificatePath, `${certificatePath}.pub`]);
           shell.exec(`ssh-keygen -b 2048 -t rsa -N "${passphrase}" -m PEM -f ${certificatePath}`);
@@ -102,7 +94,7 @@ const initSecrets = async () => {
   }
 
   for(let key in secretsMap) {
-    secrets[key] = await input(`${secretsMap[key]}: `, secrets[key]);
+    secrets[key] = await logger.textInput(`${secretsMap[key]}: `, secrets[key]);
   }
 
   logger.info('The following configuration will be saved:\n');

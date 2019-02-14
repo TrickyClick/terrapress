@@ -2,6 +2,7 @@
 
 const path = require('path');
 
+const apacheRestart = require('../apache/restart.run');
 const getConnection = require('../../helpers/ssh');
 const logger = require('../../helpers/logger');
 const terraform = require('../../helpers/terraform');
@@ -34,6 +35,7 @@ const certificateRefresh = async approve => {
   ]);
 
   logger.success('SSL certificate is fresh & clean!');
+  await apacheRestart.run();
 }
 
 module.exports = {

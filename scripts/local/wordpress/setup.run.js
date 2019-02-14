@@ -20,8 +20,13 @@ const checkFiles = [
 
 const setupWordpress = async () => {
   const timestamp = Math.floor(Date.now() / 1000);
+  const dest = path.resolve(PATH_TEMP, `wordpress-${timestamp}`);
+  const zip = await download(WORDPRESS_SOURCE_URL, `${dest}.zip`);
+  const unzippedContent = path.resolve(dest, 'wordpress', '*');
+  const wpContent = path.resolve(PATH_WORDPRESS,'wp-content');
 
-  logger.begin('Installing Wordpress')
+  logger.begin('Installing Wordpress');
+
   if(shell.test('-d', PATH_WORDPRESS)) {
     logger.info(`Backing up old WordPress files in ${PATH_WORDPRESS}`);
 
@@ -44,27 +49,18 @@ const setupWordpress = async () => {
     });
   }
 
-  logger.info('Installing the latest WordPress...');
-  const dest = path.resolve(PATH_TEMP, `wordpress-${timestamp}`);
-  const zip = await download(WORDPRESS_SOURCE_URL, `${dest}.zip`);
-
   logger.info(`Unzipping ${zip}...`);
   await unzip(zip, dest);
 
-  logger.info('Moving unzipped content');
-  const unzippedContent = path.resolve(dest, 'wordpress', '*');
-  const wpContent = path.resolve(PATH_WORDPRESS,'wp-content');
-
+  logger.info('Updating content');
   shell.mkdir('-p', PATH_WORDPRESS);
   shell.mv('-f', unzippedContent, PATH_WORDPRESS);
-
-  logger.info(`Cleaning up...`);
-  shell.rm('-rf', [dest, zip, wpContent]);
-
-  logger.info('Linking content...');
   shell.ln('-s', PATH_SRC, wpContent);
 
-  logger.success('Latest WordPress installed');
+  logger.info(`Deleting temp files`);
+  shell.rm('-rf', [dest, zip, wpContent]);
+
+  logger.success('WordPress installation complete');
 }
 
 module.exports = {

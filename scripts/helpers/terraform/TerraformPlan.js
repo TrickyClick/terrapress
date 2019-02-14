@@ -3,7 +3,6 @@
 const path = require('path');
 const shell = require('shelljs');
 
-const terminal = require('../terminal');
 const logger = require('../logger');
 const { PATH_TERRAFORM } = require('../../config');
 
@@ -139,7 +138,7 @@ class TerraformPlan {
       logger.dataRow(key, this.variables[key]);
     }
     
-    terminal('\n');
+    logger.empty(1);
 
     if(!confirm) {
       const message = this.log('Are you sure that you want to apply the plan?');

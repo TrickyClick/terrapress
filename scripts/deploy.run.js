@@ -2,14 +2,14 @@
 
 const logger = require('./helpers/logger');
 const terraform = require('./helpers/terraform');
-const installDependencies = require('./install');
-const certificateRefresh = require('./remote/certificate/refresh');
-const codeClone = require('./remote/code/clone');
-const wordpressSetup = require('./remote/wordpress/setup');
-const dbSetup = require('./remote/db/setup');
-const apacheSetup = require('./remote/apache/setup');
-const apacheRestart = require('./remote/apache/restart');
-const phpSetup = require('./remote/php/setup');
+const installDependencies = require('./remote/install.run');
+const certificateRefresh = require('./remote/certificate/refresh.run');
+const codeClone = require('./remote/code/clone.run');
+const wordpressSetup = require('./remote/wordpress/setup.run');
+const dbSetup = require('./remote/db/setup.run');
+const apacheSetup = require('./remote/apache/setup.run');
+const apacheRestart = require('./remote/apache/restart.run');
+const phpSetup = require('./remote/php/setup.run');
 
 const autoApprove = !!process.env.AUTO_APPROVE;
 
@@ -23,10 +23,10 @@ const deploy = async () => {
   const applyServicePlan = await servicePlan.apply(autoApprove);
 
   if(applyServicePlan) {
-    await installDependencies();
+    await installDependencies.run();
   }
 
-  await certificateRefresh(autoApprove);
+  await certificateRefresh.run(autoApprove);
 
   const githubPlan = await terraform.getGithubPlan();
   await githubPlan.apply(applyServicePlan);
@@ -36,7 +36,6 @@ const deploy = async () => {
   await dbSetup.run();
   await apacheSetup.run();
   await phpSetup.run();
-  await apacheRestart.run();
 
   logger.success('Deployment complete!');
 };

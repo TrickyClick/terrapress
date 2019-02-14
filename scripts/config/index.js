@@ -30,6 +30,7 @@ module.exports = {
   PATH_SECRETS,
   PHP_VERSION_MIN,
   PATH_SSH: path.resolve(USER_HOME, '.ssh'),
+  PATH_SCRIPTS: path.resolve(PATH_ROOT, 'scripts'),
   PATH_WORDPRESS: path.resolve(PATH_ROOT, 'wordpress'),
   PATH_BACKUP: path.resolve(PATH_ROOT, 'backup'),
   PATH_SRC: path.resolve(PATH_ROOT, 'src'),
