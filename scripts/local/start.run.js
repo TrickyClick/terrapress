@@ -1,5 +1,3 @@
-
-
 const shell = require('shelljs');
 
 const logger = require('../helpers/logger');

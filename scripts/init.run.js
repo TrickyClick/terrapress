@@ -1,5 +1,3 @@
-
-
 const pkg = require('../package.json');
 const logger = require('./helpers/logger');
 const initApp = require('./init/app.run');

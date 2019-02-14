@@ -1,5 +1,3 @@
-
-
 const path = require('path');
 
 const getConnection = require('../../helpers/ssh');

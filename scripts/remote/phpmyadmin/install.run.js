@@ -1,5 +1,3 @@
-
-
 const logger = require('../../helpers/logger');
 const getConnection = require('../../helpers/ssh');
 const {

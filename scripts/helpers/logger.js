@@ -1,5 +1,3 @@
-
-
 const terminal = require('./terminal');
 
 const trimMultiline = (str = '') => {

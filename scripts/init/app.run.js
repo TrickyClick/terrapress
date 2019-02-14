@@ -1,5 +1,3 @@
-
-
 const fs = require('fs');
 
 const { PATH_APP_CONFIG } = require('../config');

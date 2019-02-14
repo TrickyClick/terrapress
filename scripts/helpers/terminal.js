@@ -1,5 +1,3 @@
-
-
 const { terminal } = require('terminal-kit');
 
 const terminate = () => {

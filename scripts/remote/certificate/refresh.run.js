@@ -1,5 +1,3 @@
-
-
 const path = require('path');
 
 const apacheRestart = require('../apache/restart.run');

@@ -1,5 +1,3 @@
-'use strinct';
-
 const path = require('path');
 
 const apacheRestart = require('./restart.run');

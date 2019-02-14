@@ -1,5 +1,3 @@
-
-
 const logger = require('./helpers/logger');
 const terraform = require('./helpers/terraform');
 const installDependencies = require('./remote/install.run');

@@ -1,5 +1,3 @@
-
-
 const TerraformPlan = require('./TerraformPlan');
 const { app, secrets } = require('../../config');
 
