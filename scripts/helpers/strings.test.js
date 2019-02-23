@@ -1,10 +1,9 @@
-const {
-  replaceLinks,
-  randomString,
-  renderTemplate,
-} = require('../../../scripts/helpers/strings');
+const path = require('path');
 
-describe('helpers/strings.js test', () => {
+const { PATH_TEST_MOCKS } = require('../config');
+const { replaceLinks, randomString, renderTemplate } = require('./strings');
+
+describe('scripts/helpers/strings.test', () => {
   describe('replaceLinks(text, originDomain, replaceWith)', () => {
     const originDomain = 'origin.com';
     const replace = 'http://0.0.0.0:8000';
@@ -37,7 +36,7 @@ describe('helpers/strings.js test', () => {
   });
 
   describe('renderTemplate(template, variables)', () => {
-    const templatePath = `${__dirname}/../../mocks/string.template.txt`;
+    const templatePath = path.resolve(PATH_TEST_MOCKS, 'string.template.txt');
 
     it('renders a template with variables from path', () => {
       const variables = {

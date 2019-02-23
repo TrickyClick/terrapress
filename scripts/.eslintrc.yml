@@ -1,0 +1,11 @@
+overrides:
+  files: ['**/*.test.js']
+  env:
+    node: true
+    mocha: true
+  globals:
+    expect: true
+    sinon: true
+  rules:
+    no-unused-expressions: 0
+    one-var-declaration-per-line: 0

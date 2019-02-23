@@ -32,6 +32,7 @@ module.exports = {
   PATH_WORDPRESS: path.resolve(PATH_ROOT, 'wordpress'),
   PATH_BACKUP: path.resolve(PATH_ROOT, 'backup'),
   PATH_SRC: path.resolve(PATH_ROOT, 'src'),
+  PATH_TEST_MOCKS: path.resolve(PATH_ROOT, 'test', 'mocks'),
   PATH_TEMP: path.resolve(PATH_ROOT, '.tmp'),
   PATH_TERRAFORM: path.resolve(PATH_ROOT, 'terraform'),
   LOCAL_URL: `http://${SERVER_HOST}:${SERVER_PORT}`,

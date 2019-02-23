@@ -1,31 +1,76 @@
-const terminalHelper = require('./terminal');
+const { terminal } = require('./terminal');
 
 const trimMultiline = (str = '') => {
   const lines = str.split('\n').map(line => line.trim());
-  // const nonEmptyLines = lines.filter(l => l.trim() !== '');
-  // const terminator = nonEmptyLines.length > 1 ? '\n' : '';
-
-  return lines.join('\n'); // + terminator;
+  return lines.join('\n');
 };
 
-const loggerFactory = terminal => ({
+const COLOUR_BEGIN = 'magenta';
+const COLOUR_SUCCESS = 'green';
+const COLOUR_ERROR = 'brightRed';
+const COLOUR_FATAL_ERROR = 'red';
+const COLOUR_ALERT = 'yellow';
+const COLOUR_ALT = 'gray';
+const COLOUR_INFO = 'cyan';
+const COLOUR_HIGHLIGHT = 'blue';
+
+const logger = {
+  begin(message) {
+    terminal.print('BEGIN: ', COLOUR_BEGIN);
+    terminal.print(`${trimMultiline(message)}\n`);
+  },
+  success(message) {
+    terminal.print('SUCCESS: ', COLOUR_SUCCESS);
+    terminal.print(`${trimMultiline(message)}\n`);
+  },
   fatal(message) {
-    terminal.red('FATAL ERROR: ');
-    terminal.bold(`${trimMultiline(message)}\n`);
+    terminal.print('FATAL ERROR: ', COLOUR_FATAL_ERROR);
+    terminal.print(`${trimMultiline(message)}\n`);
   },
   title(title) {
-    terminal.brightMagenta(`${trimMultiline(title)}\n\n`);
-  },
-  begin(message) {
-    terminal.magenta('BEGIN: ');
-    terminal.bold(`${trimMultiline(message)}\n`);
+    terminal.print(`${trimMultiline(title)}\n\n`, 'brightMagenta');
   },
   error(message) {
-    terminal.brightRed('ERROR: ');
-    terminal.bold(`${trimMultiline(message)}\n`);
+    terminal.print('ERROR: ', COLOUR_ERROR);
+    terminal.print(`${trimMultiline(message)}\n`);
   },
   question(message) {
-    terminal.yellow(`${trimMultiline(message)} `);
+    terminal.print(`${trimMultiline(message)} `, COLOUR_ALERT);
+  },
+  dataRow(title, value, indent = ' ', separator = ':') {
+    terminal.print(`${indent}${title}${separator} `);
+    terminal.print(`${value}\n`, COLOUR_ALT);
+  },
+  warning(message) {
+    terminal.print('WARNING: ', COLOUR_ALT);
+    terminal.print(`${trimMultiline(message)}\n`);
+  },
+  skipping(message) {
+    terminal.print('SKIPPING: ', COLOUR_ALT);
+    terminal.print(`${trimMultiline(message)}\n`);
+  },
+  info(message) {
+    terminal.print('INFO: ', COLOUR_INFO);
+    terminal.print(`${trimMultiline(message)}\n`);
+  },
+  run(cmd, message) {
+    terminal.print('RUN: ', COLOUR_HIGHLIGHT);
+    terminal.print(`${cmd} `);
+    terminal.print(`${trimMultiline(message)}\n`);
+  },
+  sleep(seconds, message) {
+    terminal.print('SLEEPING: ', COLOUR_HIGHLIGHT);
+    terminal.print(`${trimMultiline(message)}\n`);
+
+    return new Promise(r => setTimeout(r, seconds * 1000));
+  },
+  empty(n = 1) {
+    if (!Number.isFinite(n)) {
+      throw new Error('logger.empty(n): n is not a valid number');
+    } else if (n > 0) {
+      const str = (new Array(n + 1)).join('\n');
+      terminal.print(str);
+    }
   },
   confirm(message, autoConfirm = false) {
     this.question(message);
@@ -39,48 +84,6 @@ const loggerFactory = terminal => ({
     this.question(message);
     return terminal.passwordInput(message, defaultValue);
   },
-  dataRow(title, value, indent = ' ', separator = ':') {
-    terminal.white(`${indent}${title}${separator} `);
-    terminal.gray(`${value}\n`);
-  },
-  warning(message) {
-    terminal.gray('WARNING: ');
-    terminal.bold(`${trimMultiline(message)}\n`);
-  },
-  skipping(message) {
-    terminal.gray('SKIPPING: ');
-    terminal.bold(`${trimMultiline(message)}\n`);
-  },
-  info(message) {
-    terminal.cyan('INFO: ');
-    terminal.bold(`${trimMultiline(message)}\n`);
-  },
-  run(cmd, message) {
-    terminal.blue('RUN: ');
-    terminal.bold(`${cmd} `);
-    terminal.blue(`${trimMultiline(message)}\n`);
-  },
-  success(message) {
-    terminal.green('SUCCESS: ');
-    terminal.bold(`${trimMultiline(message)}\n`);
-  },
-  sleep(seconds, message) {
-    terminal.blue('SLEEPING: ');
-    terminal.bold(`${trimMultiline(message)}\n`);
-
-    return new Promise(r => setTimeout(r, seconds * 1000));
-  },
-  empty(n = 1) {
-    if (!Number.isFinite(n)) {
-      throw new Error('logger.empty(n): n is not a valid number');
-    } else if (n > 0) {
-      const str = (new Array(n + 1)).join('\n');
-      terminal.bold(str);
-    }
-  },
-});
-
-module.exports = {
-  loggerFactory,
-  logger: loggerFactory(terminalHelper),
 };
+
+module.exports = { logger };

@@ -1,15 +1,13 @@
 const path = require('path');
 
-const {
-  findRunners,
-  describeRunnersHelp,
-} = require('../../../scripts/helpers/runner');
+const { PATH_TEST_MOCKS } = require('../config');
+const { findRunners, describeRunnersHelp } = require('./runner');
 
-const mockPath = `${__dirname}/../../mocks/runners/`;
+const mockPath = path.resolve(PATH_TEST_MOCKS, 'runners');
 const buildPath = (...args) => path.resolve.apply(null, [mockPath, ...args]);
 const runners = findRunners(mockPath);
 
-describe('helpers/runner.js test', () => {
+describe('scripts/helpers/runner.test', () => {
   it('findRunners(dir) should replace origin unencoded domain correctly', () => {
     expect(runners).deep.eq({
       one: buildPath('one.run.js'),

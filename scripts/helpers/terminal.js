@@ -1,12 +1,18 @@
 const { terminal } = require('terminal-kit');
 
-const terminate = () => {
-  terminal.grabInput(false);
-  terminal.bold('\n\nAborting...\n');
-  setTimeout(process.exit, 500);
+const BREAK_KEY = 'CTRL_C';
+
+const onKeyPress = (pressedKey) => {
+  if (pressedKey === BREAK_KEY) {
+    terminal.grabInput(false);
+    terminal.print('\n\nAborting...\n');
+    setTimeout(process.exit, 500);
+  }
 };
 
-terminal.on('key', name => (name === 'CTRL_C' ? terminate() : {}));
+terminal.print = (message, method = 'bold') => terminal[method](message);
+terminal.on('key', onKeyPress);
+
 terminal.confirm = async (defautlYes = false) => {
   const options = {
     yes: ['Y', 'y'],
@@ -17,10 +23,10 @@ terminal.confirm = async (defautlYes = false) => {
   enterTarget.push('ENTER');
 
   const text = defautlYes ? '[Y|n]: ' : '[y|N]: ';
-  terminal.bold(text);
+  terminal.print(text);
 
   const result = await terminal.yesOrNo(options).promise;
-  terminal(`${result ? 'yes' : 'no'}\n\n`);
+  terminal.print(`${result ? 'yes' : 'no'}\n\n`);
 
   return result;
 };
@@ -32,7 +38,7 @@ terminal.textInput = async (defaultValue, echoChar = false) => {
     default: defaultValue || '',
   }).promise;
 
-  terminal('\n');
+  terminal.print('\n');
   return value;
 };
 
@@ -44,9 +50,12 @@ terminal.select = async (options) => {
     leftPadding: '    ',
     selectedLeftPadding: '  * ',
   }).promise;
-  terminal('\n');
 
+  terminal.print('\n');
   return value;
 };
 
-module.exports = terminal;
+module.exports = {
+  terminal,
+  onKeyPress,
+};
