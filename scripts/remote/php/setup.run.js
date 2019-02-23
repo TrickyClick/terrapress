@@ -1,7 +1,7 @@
 
 
 const apacheRestart = require('../apache/restart.run');
-const logger = require('../../helpers/logger');
+const { logger } = require('../../helpers/logger');
 const getConnection = require('../../helpers/ssh');
 const { SERVER_UPLOAD_LIMIT_MB } = require('../../config');
 

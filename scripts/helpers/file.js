@@ -5,7 +5,7 @@ const fs = require('fs');
 const unzipLib = require('unzip');
 const shell = require('shelljs');
 
-const logger = require('./logger');
+const { logger } = require('./logger');
 
 const isHttps = /^https:\/\//i;
 

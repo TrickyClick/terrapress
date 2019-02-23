@@ -4,7 +4,7 @@ const path = require('path');
 
 const { app } = require('../../config');
 const { replaceLinks } = require('../../helpers/strings');
-const logger = require('../../helpers/logger');
+const { logger } = require('../../helpers/logger');
 const getConnection = require('../../helpers/ssh');
 
 const {

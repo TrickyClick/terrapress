@@ -2,7 +2,7 @@ const path = require('path');
 
 const apacheRestart = require('../apache/restart.run');
 const getConnection = require('../../helpers/ssh');
-const logger = require('../../helpers/logger');
+const { logger } = require('../../helpers/logger');
 const terraform = require('../../helpers/terraform');
 const {
   app: {

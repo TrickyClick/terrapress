@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const logger = require('../helpers/logger');
+const { logger } = require('../helpers/logger');
 
 let app;
 

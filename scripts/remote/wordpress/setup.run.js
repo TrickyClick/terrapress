@@ -1,7 +1,7 @@
 const path = require('path');
 
 const getConnection = require('../../helpers/ssh');
-const logger = require('../../helpers/logger');
+const { logger } = require('../../helpers/logger');
 const { randomString, renderTemplate } = require('../../helpers/strings');
 const {
   app: {

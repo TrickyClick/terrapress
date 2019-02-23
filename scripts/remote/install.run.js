@@ -1,7 +1,7 @@
 'use trict';
 
 const { app } = require('../config');
-const logger = require('../helpers/logger');
+const { logger } = require('../helpers/logger');
 const getConnection = require('../helpers/ssh');
 
 const dependencies = [

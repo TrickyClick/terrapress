@@ -1,7 +1,7 @@
 const path = require('path');
 
 const apacheRestart = require('./restart.run');
-const logger = require('../../helpers/logger');
+const { logger } = require('../../helpers/logger');
 const getConnection = require('../../helpers/ssh');
 const { renderTemplate } = require('../../helpers/strings');
 const {

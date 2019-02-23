@@ -5,7 +5,7 @@ const shell = require('shelljs');
 const { PATH_SECRETS, PATH_SSH } = require('../config');
 const secretsMap = require('../config/secretsMap');
 const terminal = require('../helpers/terminal');
-const logger = require('../helpers/logger');
+const { logger } = require('../helpers/logger');
 
 const pubCertRegex = /\.pub$/;
 

@@ -1,5 +1,5 @@
 const getConnection = require('../../helpers/ssh');
-const logger = require('../../helpers/logger');
+const { logger } = require('../../helpers/logger');
 
 const apacheRestart = async () => {
   logger.begin('Restarting Apache...');

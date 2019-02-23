@@ -1,4 +1,4 @@
-const logger = require('./helpers/logger');
+const { logger } = require('./helpers/logger');
 const { findRunners, describeRunnersHelp } = require('./helpers/runner');
 
 const command = process.argv[process.argv.length - 1];

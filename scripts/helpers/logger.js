@@ -1,14 +1,14 @@
-const terminal = require('./terminal');
+const terminalHelper = require('./terminal');
 
 const trimMultiline = (str = '') => {
   const lines = str.split('\n').map(line => line.trim());
-  const nonEmptyLines = lines.filter(l => l.trim() !== '');
-  const terminator = nonEmptyLines.length > 1 ? '\n' : '';
+  // const nonEmptyLines = lines.filter(l => l.trim() !== '');
+  // const terminator = nonEmptyLines.length > 1 ? '\n' : '';
 
-  return lines.join('\n') + terminator;
+  return lines.join('\n'); // + terminator;
 };
 
-const logger = {
+const loggerFactory = terminal => ({
   fatal(message) {
     terminal.red('FATAL ERROR: ');
     terminal.bold(`${trimMultiline(message)}\n`);
@@ -28,15 +28,15 @@ const logger = {
     terminal.yellow(`${trimMultiline(message)} `);
   },
   confirm(message, autoConfirm = false) {
-    logger.question(message);
+    this.question(message);
     return terminal.confirm(autoConfirm);
   },
   textInput(message, defaultValue = '') {
-    logger.question(message);
+    this.question(message);
     return terminal.textInput(message, defaultValue);
   },
   passwordInput(message, defaultValue = '') {
-    logger.question(message);
+    this.question(message);
     return terminal.passwordInput(message, defaultValue);
   },
   dataRow(title, value, indent = ' ', separator = ':') {
@@ -57,8 +57,8 @@ const logger = {
   },
   run(cmd, message) {
     terminal.blue('RUN: ');
-    terminal.bold(cmd);
-    terminal.blue(` ${trimMultiline(message)}\n`);
+    terminal.bold(`${cmd} `);
+    terminal.blue(`${trimMultiline(message)}\n`);
   },
   success(message) {
     terminal.green('SUCCESS: ');
@@ -71,11 +71,16 @@ const logger = {
     return new Promise(r => setTimeout(r, seconds * 1000));
   },
   empty(n = 1) {
-    let str = '';
-    for (let i = 0; i < n; i++) str += '\n';
-
-    return str && terminal(str);
+    if (!Number.isFinite(n)) {
+      throw new Error('logger.empty(n): n is not a valid number');
+    } else if (n > 0) {
+      const str = (new Array(n + 1)).join('\n');
+      terminal.bold(str);
+    }
   },
-};
+});
 
-module.exports = logger;
+module.exports = {
+  loggerFactory,
+  logger: loggerFactory(terminalHelper),
+};

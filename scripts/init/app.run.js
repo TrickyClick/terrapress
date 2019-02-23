@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const { PATH_APP_CONFIG } = require('../config');
-const logger = require('../helpers/logger');
+const { logger } = require('../helpers/logger');
 
 const sshRepoRegex = /^.*@[a-z0-9-]{2,}\.[a-z]{2,}(\.[a-z]{2,})?:.*\/.*\.git$/i;
 const httpRepoRegex = /^http(s)?:\/\/.*\.git$/i;

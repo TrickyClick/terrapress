@@ -2,7 +2,7 @@ const path = require('path');
 const shell = require('shelljs');
 
 const { download, unzip } = require('../../helpers/file');
-const logger = require('../../helpers/logger');
+const { logger } = require('../../helpers/logger');
 const {
   PATH_BACKUP,
   PATH_SRC,

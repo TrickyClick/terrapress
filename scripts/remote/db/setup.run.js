@@ -7,7 +7,7 @@ const {
     SERVER_PATH_WP_DB_CONFIG,
   },
 } = require('../../config');
-const logger = require('../../helpers/logger');
+const { logger } = require('../../helpers/logger');
 const getConnection = require('../../helpers/ssh');
 const { randomString, renderTemplate } = require('../../helpers/strings');
 

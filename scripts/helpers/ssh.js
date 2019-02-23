@@ -4,7 +4,7 @@ const shell = require('shelljs');
 const NodeSSH = require('node-ssh');
 
 const { secrets, PATH_TEMP } = require('../config');
-const logger = require('./logger');
+const { logger } = require('./logger');
 const terraform = require('./terraform');
 const { randomString } = require('./strings');
 

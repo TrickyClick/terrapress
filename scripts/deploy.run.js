@@ -1,4 +1,4 @@
-const logger = require('./helpers/logger');
+const { logger } = require('./helpers/logger');
 const terraform = require('./helpers/terraform');
 const installDependencies = require('./remote/install.run');
 const certificateRefresh = require('./remote/certificate/refresh.run');

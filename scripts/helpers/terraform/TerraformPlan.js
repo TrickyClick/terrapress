@@ -1,7 +1,7 @@
 const path = require('path');
 const shell = require('shelljs');
 
-const logger = require('../logger');
+const { logger } = require('../logger');
 const { PATH_TERRAFORM } = require('../../config');
 
 const ESCAPE_SEQUENCE = /\x1b\[[0-9;]*[a-zA-Z]/g;

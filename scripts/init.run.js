@@ -1,5 +1,5 @@
 const pkg = require('../package.json');
-const logger = require('./helpers/logger');
+const { logger } = require('./helpers/logger');
 const initApp = require('./init/app.run');
 const initSecrets = require('./init/secrets.run');
 

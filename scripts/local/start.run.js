@@ -1,6 +1,6 @@
 const shell = require('shelljs');
 
-const logger = require('../helpers/logger');
+const { logger } = require('../helpers/logger');
 const {
   PHP_VERSION_MIN,
   SERVER_PORT,
