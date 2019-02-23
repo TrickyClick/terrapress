@@ -9,3 +9,5 @@ overrides:
   rules:
     no-unused-expressions: 0
     one-var-declaration-per-line: 0
+    one-var: 0
+    no-new: 0

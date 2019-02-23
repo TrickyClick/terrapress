@@ -6,15 +6,15 @@ const { PATH_TERRAFORM } = require('../../config');
 
 const ESCAPE_SEQUENCE = /\x1b\[[0-9;]*[a-zA-Z]/g;
 
-const terraform = shell.which('terraform');
-if (!terraform) {
-  logger.fatal('"terraform" binary was not found');
-  logger.info('Download terraform from https://www.terraform.io/downloads.html');
-  process.exit();
-}
-
 class TerraformPlan {
   constructor(name, variables = {}) {
+    this.terraform = shell.which('terraform');
+    if (!this.terraform) {
+      logger.fatal('"terraform" binary was not found');
+      logger.info('Download terraform from https://www.terraform.io/downloads.html');
+      process.exit();
+    }
+
     this.name = name.replace('.', '');
     this.path = path.resolve(PATH_TERRAFORM, this.name);
     this.variables = variables;
@@ -41,7 +41,8 @@ class TerraformPlan {
       key => `TF_VAR_${key}="${this.variables[key]}"`,
     );
 
-    return `${variables.join(' ')} ${terraform}`;
+    variables.push('');
+    return `${variables.join(' ')}${this.terraform}`;
   }
 
   get output() {

@@ -2,6 +2,8 @@ const { terminal } = require('terminal-kit');
 
 const BREAK_KEY = 'CTRL_C';
 
+terminal.print = (message, method = 'bold') => terminal[method](message);
+
 const onKeyPress = (pressedKey) => {
   if (pressedKey === BREAK_KEY) {
     terminal.grabInput(false);
@@ -10,7 +12,6 @@ const onKeyPress = (pressedKey) => {
   }
 };
 
-terminal.print = (message, method = 'bold') => terminal[method](message);
 terminal.on('key', onKeyPress);
 
 terminal.confirm = async (defautlYes = false) => {
