@@ -140,9 +140,8 @@ describe('scripts/helpers/logger.test', () => {
       const [[message]] = terminal.print.args;
       expect(message).eq(`${testMsgTrimmed} `);
 
-      const [[msg, defaultText]] = terminal.textInput.args;
-      expect(msg).eq(testMsg);
-      expect(defaultText).eq('');
+      const [[defaultValue]] = terminal.textInput.args;
+      expect(defaultValue).eq('');
     });
 
     it('should render with supplied defaultValue', () => {
@@ -151,9 +150,8 @@ describe('scripts/helpers/logger.test', () => {
       const [[message]] = terminal.print.args;
       expect(message).eq(`${testMsgTrimmed} `);
 
-      const [[msg, defaultText]] = terminal.textInput.args;
-      expect(msg).eq(testMsg);
-      expect(defaultText).eq('de$fault');
+      const [[defaultValue]] = terminal.textInput.args;
+      expect(defaultValue).eq('de$fault');
     });
   });
 
@@ -163,8 +161,7 @@ describe('scripts/helpers/logger.test', () => {
       const [[message]] = terminal.print.args;
       expect(message).eq(`${testMsgTrimmed} `);
 
-      const [[msg, defaultText]] = terminal.passwordInput.args;
-      expect(msg).eq(testMsg);
+      const [[defaultText]] = terminal.passwordInput.args;
       expect(defaultText).eq('');
     });
   });
@@ -176,8 +173,7 @@ describe('scripts/helpers/logger.test', () => {
       const [[message]] = terminal.print.args;
       expect(message).eq(`${testMsgTrimmed} `);
 
-      const [[passMsg, defaultPass]] = terminal.passwordInput.args;
-      expect(passMsg).eq(testMsg);
+      const [[defaultPass]] = terminal.passwordInput.args;
       expect(defaultPass).eq('');
     });
 
@@ -187,8 +183,7 @@ describe('scripts/helpers/logger.test', () => {
       const [[message]] = terminal.print.args;
       expect(message).eq(`${testMsgTrimmed} `);
 
-      const [[passMsg, defaultPass]] = terminal.passwordInput.args;
-      expect(passMsg).eq(testMsg);
+      const [[defaultPass]] = terminal.passwordInput.args;
       expect(defaultPass).eq('pass$$');
     });
   });

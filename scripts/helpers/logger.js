@@ -78,11 +78,11 @@ const logger = {
   },
   textInput(message, defaultValue = '') {
     this.question(message);
-    return terminal.textInput(message, defaultValue);
+    return terminal.textInput(defaultValue);
   },
   passwordInput(message, defaultValue = '') {
     this.question(message);
-    return terminal.passwordInput(message, defaultValue);
+    return terminal.passwordInput(defaultValue);
   },
 };
 
