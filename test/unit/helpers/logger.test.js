@@ -105,15 +105,17 @@ describe('helpers/logger.js test', () => {
 
     it('logger.empty(n) renders n > 0 amount of break line characters', () => {
       logger.empty(5);
+      logger.empty(1);
       logger.empty(3);
       logger.empty(-1);
       logger.empty(0);
 
-      const [[first], [second]] = print.args;
+      const [[first], [second], [third]] = print.args;
 
-      expect(print.callCount).eq(2);
+      expect(print.callCount).eq(3);
       expect(first).eq('\n\n\n\n\n');
-      expect(second).eq('\n\n\n');
+      expect(second).eq('\n');
+      expect(third).eq('\n\n\n');
     });
 
     it('logger.querstion(message) renders text with spacing, no breakline', () => {
