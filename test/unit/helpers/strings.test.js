@@ -54,16 +54,21 @@ describe('helpers/strings.js test', () => {
   });
 
   describe('renderTemplate(template, variables)', () => {
+    const templatePath = `${__dirname}/../../mocks/string.template.txt`;
+
     it('renders a template with variables from path', () => {
       const variables = {
         name: 'Andriyan',
         location: 'New York',
       };
 
-      const templatePath = `${__dirname}/../../mocks/string.template.txt`;
       const template = renderTemplate(templatePath, variables);
-
       expect(template).eq('Hello Andriyan, you are in\nNew York\nWelcome Andriyan!');
+    });
+
+    it('renders a template without variables from path', () => {
+      const template = renderTemplate(templatePath);
+      expect(template).eq('Hello %name%, you are in\n%location%\nWelcome %name%!');
     });
   });
 });

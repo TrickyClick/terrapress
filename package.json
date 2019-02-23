@@ -55,6 +55,11 @@
       "pre-commit": "lint-staged"
     }
   },
+  "nyc": {
+    "exclude": [
+      "test"
+    ]
+  },
   "lint-staged": {
     "*.js": [
       "eslint --fix",
