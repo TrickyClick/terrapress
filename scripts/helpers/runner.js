@@ -4,11 +4,15 @@ const path = require('path');
 const { PATH_SCRIPTS } = require('../config');
 
 const runnerRegex = /\.run\.js$/;
-const sepRegex = path.sep === '/' ? /\//gi : /\\/gi;
+const sepRegex = path.sep === '/' ? /\//g : /\\/g;
+const rootPath = path.sep === '/' ? /^\//i : /^[a-z]{1}:\\/g;
 
-const pathToCommand = filepath => filepath
+const pathToCommand = (filepath, root = '') => path.resolve(filepath)
+  .replace(path.resolve(root), '')
+  .replace(path.resolve(root), '')
   .replace(`${PATH_SCRIPTS}${path.sep}`, '')
   .replace(runnerRegex, '')
+  .replace(rootPath, '')
   .replace(sepRegex, ':');
 
 const findRunnerScripts = dir => fs.readdirSync(dir)
@@ -25,11 +29,11 @@ const findRunnerScripts = dir => fs.readdirSync(dir)
   }, [])
   .filter(filepath => runnerRegex.test(filepath));
 
-const findRunners = () => {
-  const scripts = findRunnerScripts(PATH_SCRIPTS);
+const findRunners = (dir = PATH_SCRIPTS) => {
+  const scripts = findRunnerScripts(dir);
   return scripts.reduce((aggregator, filepath) => ({
     ...aggregator,
-    [pathToCommand(filepath)]: filepath,
+    [pathToCommand(filepath, dir)]: filepath,
   }), {});
 };
 
