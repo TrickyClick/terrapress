@@ -6,14 +6,16 @@ const replaceLinks = (text, originDomain, replaceWith) => {
   const rawRegex = new RegExp(`http(s)?://${regexDomain}`, 'gi');
   const encodedRegex = new RegExp(`http(s)?${encodeURIComponent('://')}${regexDomain}`, 'gi');
 
-  return text.replace(rawRegex, replaceWith).replace(encodedRegex, replaceWith);
+  return text
+    .replace(rawRegex, replaceWith)
+    .replace(encodedRegex, encodeURIComponent(replaceWith));
 };
 
 const randomString = (len = 20) => crypto.randomBytes(Math.ceil(len / 2))
   .toString('hex')
   .substr(0, len);
 
-const replaceVariables = (template, variables) => {
+const replaceVariables = (template, variables = {}) => {
   const keys = Object.keys(variables);
   if (!keys.length) {
     return template;
@@ -36,5 +38,4 @@ module.exports = {
   replaceLinks,
   randomString,
   renderTemplate,
-  replaceVariables,
 };
