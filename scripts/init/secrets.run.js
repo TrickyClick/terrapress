@@ -98,7 +98,7 @@ const initSecrets = async () => {
 
   Object.keys(secrets).forEach(key => logger.dataRow(key, secrets[key]));
 
-  const confirm = logger.confirm('Does this look OK?', true);
+  const confirm = await logger.confirm('Does this look OK?', true);
   if (confirm) {
     fs.writeFileSync(PATH_SECRETS, JSON.stringify(secrets));
   }
