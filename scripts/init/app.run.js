@@ -89,7 +89,7 @@ const initApp = async () => {
 
   Object.keys(data).forEach(key => logger.dataRow(key, data[key]));
 
-  const confirm = await logger.confirm('Does this look OK?', true);
+  const confirm = await logger.confirm('\nDoes this look OK?', true);
 
   if (confirm) {
     fs.writeFileSync(PATH_APP_CONFIG, JSON.stringify(data));
