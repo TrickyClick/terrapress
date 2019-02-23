@@ -1,4 +1,3 @@
-const crypto = require('crypto');
 const {
   replaceLinks,
   randomString,
@@ -26,22 +25,6 @@ describe('helpers/strings.js test', () => {
     });
   });
   describe('randomString(len)', () => {
-    beforeEach(() => {
-      sinon.spy(crypto, 'randomBytes');
-    });
-
-    afterEach(() => {
-      crypto.randomBytes.restore();
-    });
-
-    it('calls crypto.randomBytes with ceiled half-len', () => {
-      randomString(21);
-      randomString(12);
-      randomString(9);
-
-      expect(crypto.randomBytes.args).deep.eq([[11], [6], [5]]);
-    });
-
     it('should generate random strings with correct length', () => {
       const keys = [];
       for (let i = 0; i < 20; i++) {
