@@ -3,13 +3,16 @@ plugins:
   - mocha
 env:
   node: true
-rules:
-  no-await-in-loop: 0
-  no-restricted-syntax: 0
-  global-require: 0
-  no-plusplus: 0
-  guard-for-in: 0
-  no-control-regex: 0
-  import/no-dynamic-require: 0
-  no-empty: [2, { allowEmptyCatch: true }]
-  
+overrides:
+  files: ["scripts/*.js", "scripts/**/*.js"]
+  excludedFiles: ["src"]
+  rules:
+    no-await-in-loop: 0
+    no-restricted-syntax: 0
+    global-require: 0
+    no-plusplus: 0
+    guard-for-in: 0
+    no-control-regex: 0
+    import/no-dynamic-require: 0
+    no-empty: [2, { allowEmptyCatch: true }]
+    

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run exec local:start",
+    "setup": "npm run exec local:wordpress:setup",
     "lint": "eslint .",
     "test": "mocha",
     "test:watch": "mocha --watch --fail-fast",
@@ -61,11 +62,7 @@
     ]
   },
   "lint-staged": {
-    "scripts/*.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "scripts/**/*.js": [
+    "*.js": [
       "eslint --fix",
       "git add"
     ]

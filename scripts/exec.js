@@ -1,11 +1,11 @@
 const { logger } = require('./helpers/logger');
 const { findRunners, describeRunnersHelp } = require('./helpers/runner');
 
-const command = process.argv[process.argv.length - 1];
+const [, , command] = process.argv;
 const runners = findRunners();
 
-if (!runners[command]) {
-  if (command !== __filename && command !== 'help') {
+if (!command || !runners[command]) {
+  if (command && command !== 'help') {
     logger.fatal(`Unrecognised command "${command}"`);
   }
 
