@@ -7,7 +7,7 @@
     "start": "npm run exec local:start",
     "lint": "eslint .",
     "test": "mocha",
-    "test:watch": "mocha --watch",
+    "test:watch": "mocha --watch --fail-fast",
     "exec": "node ./scripts/exec.js"
   },
   "repository": {
