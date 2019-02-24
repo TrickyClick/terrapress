@@ -16,7 +16,8 @@
 .tmp
 coverage
 .nyc_output
-/wordpress
+wordpress
+src/uploads
 backup
 node_modules
 secrets.json
