@@ -63,7 +63,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix",
+      "eslint --fix --ignore-pattern src/**/*.js",
       "git add"
     ]
   }
