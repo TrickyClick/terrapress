@@ -2,7 +2,7 @@ const path = require('path');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
-const unzipLib = require('unzip');
+const unzipLib = require('unzipper');
 const shell = require('shelljs');
 
 const { logger } = require('./logger');
