@@ -1,6 +1,6 @@
 {
   "name": "terrapress",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Boilerplate for provisioning a Wordpress instance with extras on DigitalOcean",
   "main": "index.js",
   "scripts": {
