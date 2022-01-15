@@ -35,7 +35,7 @@
   "homepage": "https://github.com/TrickyClick/terrapress#readme",
   "dependencies": {
     "node-ssh": "^5.1.2",
-    "shelljs": "^0.8.3",
+    "shelljs": "^0.8.5",
     "terminal-kit": "^1.26.11",
     "unzipper": "^0.10.8"
   },
