@@ -36,7 +36,7 @@
   "dependencies": {
     "node-ssh": "^5.1.2",
     "shelljs": "^0.8.3",
-    "terminal-kit": "^1.26.11",
+    "terminal-kit": "^3.0.0",
     "unzipper": "^0.10.8"
   },
   "devDependencies": {
